@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.7.1](https://github.com/kevinxin90/smartapi-kg.js/compare/v3.7.0...v3.7.1) (2021-05-14)
+
+
+### Bug Fixes
+
+* :bug: fix issue when predicates is not found ([87fc6f4](https://github.com/kevinxin90/smartapi-kg.js/commit/87fc6f4da76798d548d1c62de05bd48e1aaee858))
+
 ## [3.7.0](https://github.com/kevinxin90/smartapi-kg.js/compare/v3.6.0...v3.7.0) (2021-04-02)
 
 
