@@ -22,7 +22,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kevinxin90/smartapi-kg.js.git"
+    "url": "git+https://github.com/biothings/smartapi-kg.js.git"
   },
   "keywords": [
     "smartapi",
@@ -34,9 +34,9 @@
   "author": "Jiwen Xin",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/kevinxin90/smartapi-kg.js/issues"
+    "url": "https://github.com/biothings/smartapi-kg.js/issues"
   },
-  "homepage": "https://github.com/kevinxin90/smartapi-kg.js#readme",
+  "homepage": "https://github.com/biothings/smartapi-kg.js#readme",
   "devDependencies": {
     "@babel/cli": "^7.13.10",
     "@babel/core": "^7.13.10",
