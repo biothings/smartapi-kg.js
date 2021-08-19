@@ -4,12 +4,17 @@ export interface SmartAPIQueryResult {
   hits: SmartAPISpec[];
 }
 
+export interface apiListObject {
+  id: string;
+  name: string;
+}
+
 export interface BuilderOptions {
   tag?: string;
   teamName?: string;
   smartAPIID?: string;
   component?: string;
-  apiNames?: string[];
+  apiList?: apiListObject[]; 
 }
 
 interface PredicatesQueryOperationInterface {

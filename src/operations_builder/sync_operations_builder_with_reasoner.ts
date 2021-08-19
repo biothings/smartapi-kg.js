@@ -4,6 +4,8 @@ import { BuilderOptions } from "../types";
 import fs from "fs";
 import { SmartAPIKGOperationObject } from "../parser/types";
 import { PredicatesMetadata } from "../types";
+import Debug from "debug";
+const debug = Debug("bte:smartapi-kg:SyncOperationsBuilderWithReasoner");
 
 export default class SyncOperationsBuilderWithReasoner extends BaseOperationsBuilder {
   private _file_path: string;
@@ -66,9 +68,14 @@ export default class SyncOperationsBuilderWithReasoner extends BaseOperationsBui
         }
       });
     });
-    if (!(typeof this._options.apiNames === "undefined")) {
-      return ops.filter((op) =>
-        this._options.apiNames.includes(op.association.api_name)
+    if (!(typeof this._options.apiList === "undefined")) {
+      return ops.filter((op) => {
+        let api = this._options.apiList.find((api) => (api.id === op.association.smartapi.id));
+        if (api && api.name !== op.association.api_name) {
+          debug(`Expected to get '${api.name}' with smartapi-id:${api.id} but instead got '${op.association.api_name}'`);
+        } 
+        return api;
+      }
       );
     }
     return ops;
@@ -86,7 +93,7 @@ export default class SyncOperationsBuilderWithReasoner extends BaseOperationsBui
       this._options.teamName,
       this._options.tag,
       this._options.component,
-      this._options.apiNames,
+      this._options.apiList,
       this._file_path
     );
     const nonTRAPIOps = this.loadOpsFromSpecs(specs);

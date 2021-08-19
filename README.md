@@ -90,6 +90,21 @@ npm i @biothings-explorer/smartapi-kg
       let meta_kg = new MetaKG(file_path);
       meta_kg.constructMetaKGSync();
     ```
+  
+  - Option 9: Load Meta-KG with an api list
+    ```javascript
+    meta_kg.constructMetaKGSync(includeReasoner=true, {apiList: [
+      {
+        id: '09c8782d9f4027712e65b95424adba79',
+        name: 'MyVariant.info API'
+      },
+      {
+        id: '59dce17363dce279d389100834e43648',
+        name: 'MyGene.info API'
+      }
+    ]});
+    ```
+
 
 
 - Filter the Meta-KG for specific associations based on input, output, predicate, or api combinations.

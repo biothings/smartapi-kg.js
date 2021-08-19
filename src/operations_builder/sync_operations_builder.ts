@@ -16,7 +16,7 @@ export default class SyncOperationsBuilder extends BaseOperationsBuilder {
       this._options.teamName,
       this._options.tag,
       this._options.component,
-      this._options.apiNames,
+      this._options.apiList,
       this._file_path
     );
     return this.loadOpsFromSpecs(specs);
