@@ -22,6 +22,10 @@
 
 3. Test to make sure all test pass
 
+4. Generate the bundle file and commit the changes.
+
+   ```npm run bundle```
+
 
 #### Make a release
 
