@@ -169,7 +169,16 @@ describe('Test constructMetaKG from local stored specs', () => {
 
     test("Test construct meta-kg with a constrained list of apis", async () => {
         const meta_kg = new MetaKG();
-        meta_kg.constructMetaKGSync(false, { apiNames: ["MyGene.info API", "MyVariant.info API"] });
+        meta_kg.constructMetaKGSync(false, { apiList: [
+            {
+                id: '59dce17363dce279d389100834e43648',
+                name: 'MyGene.info API'
+            }, 
+            {
+                id: '09c8782d9f4027712e65b95424adba79',
+                name: 'MyVariant.info API'
+            }
+        ] });
         expect(meta_kg.ops).toBeInstanceOf(Array);
         expect(meta_kg.ops.length).toBeGreaterThan(0);
         const apis = Array.from(new Set(meta_kg.ops.map(op => op.association.api_name)));
@@ -180,14 +189,22 @@ describe('Test constructMetaKG from local stored specs', () => {
 
     test("Test construct meta-kg with a constrained list of apis and enable reasoner", async () => {
         const meta_kg = new MetaKG();
-        meta_kg.constructMetaKGSync(true, { apiNames: ["MyGene.info API", "MyVariant.info API", "Automat HMDB"] });
+        meta_kg.constructMetaKGSync(true, { apiList: [
+            {
+                id: '59dce17363dce279d389100834e43648',
+                name: 'MyGene.info API'
+            }, 
+            {
+                id: '09c8782d9f4027712e65b95424adba79',
+                name: 'MyVariant.info API'
+            }
+        ] });
         expect(meta_kg.ops).toBeInstanceOf(Array);
         expect(meta_kg.ops.length).toBeGreaterThan(0);
         const apis = Array.from(new Set(meta_kg.ops.map(op => op.association.api_name)));
-        expect(apis).toHaveLength(3);
+        expect(apis).toHaveLength(2);
         expect(apis).toContain("MyGene.info API");
         expect(apis).toContain("MyVariant.info API");
-        expect(apis).toContain("Automat HMDB");
     });
 
 });
