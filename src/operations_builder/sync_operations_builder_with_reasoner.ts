@@ -38,10 +38,12 @@ export default class SyncOperationsBuilderWithReasoner extends BaseOperationsBui
     if (!("predicates" in metadata)) {
       return ops;
     }
-    Object.keys(metadata.predicates).map((sbj) => {
-      Object.keys(metadata.predicates[sbj]).map((obj) => {
-        if (Array.isArray(metadata.predicates[sbj][obj])) {
-          metadata.predicates[sbj][obj].map((pred) => {
+    //predicates are store as OBJ:{SUBJ:[predicates]}
+    //parses each layer accordingly
+    Object.keys(metadata.predicates).map((obj) => {
+      Object.keys(metadata.predicates[obj]).map((sbj) => {
+        if (Array.isArray(metadata.predicates[obj][sbj])) {
+          metadata.predicates[obj][sbj].map((pred) => {
             ops.push({
               association: {
                 input_type: this.removeBioLinkPrefix(sbj),
