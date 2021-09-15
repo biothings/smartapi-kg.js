@@ -113,10 +113,13 @@ export interface XBTEKGSOperationObject {
   source?: string;
   parameters?: XBTEParametersObject;
   requestBody?: any;
+  requestBodyType?: string;
   supportBatch?: boolean;
+  useTemplating?: boolean;
   inputSeparator?: string;
   response_mapping?: SmartAPIReferenceObject;
   responseMapping?: SmartAPIReferenceObject;
+  templateInputs?: object;
 }
 
 export interface SmartAPISpec {
