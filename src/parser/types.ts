@@ -1,6 +1,7 @@
 export interface XTranslatorObject {
   component: string;
   team: string[];
+  "infores-curie"?: string;
 }
 
 interface SmartAIPInfoObject {
