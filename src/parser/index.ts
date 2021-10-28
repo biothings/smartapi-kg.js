@@ -43,7 +43,7 @@ export default class API implements APIClass {
     if (!("x-translator" in this.smartapiDoc.info)) {
       return undefined;
     }
-    return this.smartapiDoc.info["x-translator"]["infores-curie"];
+    return this.smartapiDoc.info["x-translator"]["infores"];
   }
 
   private fetchXTranslatorComponent(): string | undefined {
@@ -107,7 +107,7 @@ export default class API implements APIClass {
       "x-translator": {
         component: this.fetchXTranslatorComponent(),
         team: this.fetchXTranslatorTeam(),
-        "infores-curie": this.fetchXTranslatorInforesCurie() 
+        "infores": this.fetchXTranslatorInforesCurie() 
       },
       smartapi: {
         id: this.smartapiDoc._id,
