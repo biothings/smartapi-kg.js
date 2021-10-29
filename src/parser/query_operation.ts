@@ -9,6 +9,7 @@ export default class QueryOperationObject implements QueryOperationInterface {
   private _requestBody: object;
   private _requestBodyType: string;
   private _supportBatch: boolean;
+  private _batchSize: number;
   private _useTemplating: boolean;
   private _inputSeparator: string;
   private _path: string;
@@ -26,6 +27,7 @@ export default class QueryOperationObject implements QueryOperationInterface {
     this._useTemplating = newOp.useTemplating;
     this._inputSeparator = newOp.inputSeparator;
     this._templateInputs = newOp.templateInputs;
+    this._batchSize = newOp.batchSize;
   }
 
   get templateInputs(): object {
@@ -46,6 +48,10 @@ export default class QueryOperationObject implements QueryOperationInterface {
 
   get supportBatch(): boolean {
     return this._supportBatch;
+  }
+
+  get batchSize(): number {
+    return this._batchSize;
   }
 
   get useTemplating(): boolean {
