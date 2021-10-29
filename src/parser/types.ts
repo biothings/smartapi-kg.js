@@ -121,6 +121,7 @@ export interface XBTEKGSOperationObject {
   response_mapping?: SmartAPIReferenceObject;
   responseMapping?: SmartAPIReferenceObject;
   templateInputs?: object;
+  batchSize?: number;
 }
 
 export interface SmartAPISpec {
