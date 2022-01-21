@@ -7,6 +7,10 @@ import { PredicatesMetadata } from "../types";
 import Debug from "debug";
 const debug = Debug("bte:smartapi-kg:SyncOperationsBuilderWithReasoner");
 
+declare global {
+  var missingAPIs: any;
+}
+
 export default class SyncOperationsBuilderWithReasoner extends BaseOperationsBuilder {
   private _file_path: string;
   private _predicates_file_path: string;
@@ -75,7 +79,7 @@ export default class SyncOperationsBuilderWithReasoner extends BaseOperationsBui
         let api = this._options.apiList.find((api) => (api.id === op.association.smartapi.id));
         if (api && api.name !== op.association.api_name) {
           debug(`Expected to get '${api.name}' with smartapi-id:${api.id} but instead got '${op.association.api_name}'`);
-        } 
+        }
         return api;
       }
       );
@@ -100,6 +104,24 @@ export default class SyncOperationsBuilderWithReasoner extends BaseOperationsBui
     );
     const nonTRAPIOps = this.loadOpsFromSpecs(specs);
     const predicatesMetada = this.fetch();
+    global.missingAPIs = syncLoaderFactory(
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      this._file_path
+    ).filter(
+      spec => "info" in spec &&
+      "x-translator" in spec.info &&
+      spec.info["x-translator"].component === "KP" &&
+      "paths" in spec &&
+      "/query" in spec.paths &&
+      "x-trapi" in spec.info &&
+      spec.servers.length &&
+      "/meta_knowledge_graph" in spec.paths &&
+      !predicatesMetada.map(m => m.association.smartapi.id).includes(spec._id)
+    );
     let TRAPIOps = [] as SmartAPIKGOperationObject[];
     predicatesMetada.map((metadata) => {
       TRAPIOps = [...TRAPIOps, ...this.parsePredicateEndpoint(metadata)];
