@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.0](https://github.com/biothings/smartapi-kg.js/compare/v3.9.0...v4.0.0) (2022-06-02)
+
+
+### Features
+
+* :sparkle: Merge pull request [#38](https://github.com/biothings/smartapi-kg.js/issues/38) from biothings/smartapi-id ([317e24d](https://github.com/biothings/smartapi-kg.js/commit/317e24d05753c9f5c528232ee9cbd77eec0ce655)), closes [#258](https://github.com/biothings/smartapi-kg.js/issues/258)
+* read in x-translator infores-curie field ([366a2af](https://github.com/biothings/smartapi-kg.js/commit/366a2af5e7e097995e7893905c0f3d88fc3682ce))
+* support annotated batchSize for ID chunking ([9a2952b](https://github.com/biothings/smartapi-kg.js/commit/9a2952b475647603262f5e1571d5a0dad1de3ef8))
+* support for templating-related operation annotations ([186bb4f](https://github.com/biothings/smartapi-kg.js/commit/186bb4fff4021da9baf9fa8b51b35f50eeff3494))
+* use smartapi ids instead of names for filtering, apiNames -> apiList ([b22f1a4](https://github.com/biothings/smartapi-kg.js/commit/b22f1a4c1a6d281e17e9d523d0a80ca1e88bf97a))
+
+
+### Bug Fixes
+
+* change infores-curie to infores which will be in smartapi yaml files ([dde5335](https://github.com/biothings/smartapi-kg.js/commit/dde5335cf8a8945288c44039659f260cdc004a55))
+* support global missing APIs for warning log ([6666471](https://github.com/biothings/smartapi-kg.js/commit/6666471f66b720fd2f8f661ad1271e3132c9fd81))
+
 ## [3.9.0](https://github.com/biothings/smartapi-kg.js/compare/v3.8.1...v3.9.0) (2021-08-16)
 
 ### [3.8.1](https://github.com/kevinxin90/smartapi-kg.js/compare/v3.8.0...v3.8.1) (2021-05-22)
