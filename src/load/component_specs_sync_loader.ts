@@ -1,12 +1,12 @@
-import AllSpecsSyncLoader from "./all_specs_sync_loader";
-import { SmartAPIQueryResult } from "../types";
+import { SmartAPIQueryResult, apiListObject } from "../types";
 import { SmartAPISpec } from "../parser/types";
+import APIListSpecsSyncLoader from "./api_list_specs_sync_loader";
 
-export default class ComponentSpecsSyncLoader extends AllSpecsSyncLoader {
+export default class ComponentSpecsSyncLoader extends APIListSpecsSyncLoader {
   private _component: string;
 
-  constructor(component: string, path: string) {
-    super(path);
+  constructor(component: string, apiList: apiListObject, path: string) {
+    super(apiList, path);
     this._component = component;
   }
 

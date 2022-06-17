@@ -1,12 +1,12 @@
-import AllSpecsSyncLoader from "./all_specs_sync_loader";
-import { SmartAPIQueryResult } from "../types";
+import { SmartAPIQueryResult, apiListObject } from "../types";
 import { SmartAPISpec } from "../parser/types";
+import APIListSpecsSyncLoader from "./api_list_specs_sync_loader";
 
-export default class TeamSpecsSyncLoader extends AllSpecsSyncLoader {
+export default class TeamSpecsSyncLoader extends APIListSpecsSyncLoader {
   private _teamName: string;
 
-  constructor(teamName: string, path: string) {
-    super(path);
+  constructor(teamName: string, apiList: apiListObject, path: string) {
+    super(apiList, path);
     this._teamName = teamName;
   }
 

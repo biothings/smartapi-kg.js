@@ -50,7 +50,7 @@ export default class MetaKG {
     options: BuilderOptions = {}
   ): Promise<SmartAPIKGOperationObject[]> {
     this._ops = await asyncBuilderFactory(options, includeReasoner);
-    return this._ops;
+    return this.ops;
   }
 
   /**
@@ -67,7 +67,7 @@ export default class MetaKG {
       this._file_path,
       this._predicates_path
     );
-    return this._ops;
+    return this.ops;
   }
 
   /**
