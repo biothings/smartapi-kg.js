@@ -5,20 +5,28 @@ import Debug from "debug";
 const debug = Debug("bte:smartapi-kg:APIListSpecsSyncLoader");
 
 export default class APIListSpecsSyncLoader extends AllSpecsSyncLoader {
-  private _apiList: apiListObject[];
+  private _apiList: apiListObject;
 
-  constructor(apiList: apiListObject[], path: string) {
+  constructor(apiList: apiListObject, path: string) {
     super(path);
     this._apiList = apiList;
   }
 
   parse(input: SmartAPIQueryResult): SmartAPISpec[] {
-    return input.hits.filter((item) => {
-      let api = this._apiList.find((api) => (api.id === item._id));
-      if (api && api.name !== item.info.title) {
-        debug(`Expected to get '${api.name}' with smartapi-id:${api.id} but instead got '${item.info.title}'`);
-      } 
-      return api;
-    });
+    return input.hits
+      .filter(item => {
+        let api = this._apiList.include.find(api => api.id === item._id);
+        if (api && api.name !== item.info.title) {
+          debug(`Expected to get '${api.name}' with smartapi-id:${api.id} but instead got '${item.info.title}'`);
+        }
+        return api;
+      })
+      .filter(item => {
+        let api = this._apiList.exclude.find(api => api.id === item._id);
+        if (api && api.name !== item.info.title) {
+          debug(`Expected to get '${api.name}' with smartapi-id:${api.id} but instead got '${item.info.title}'`);
+        }
+        return !api;
+      });
   }
 }

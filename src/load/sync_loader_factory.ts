@@ -14,23 +14,22 @@ export const syncLoaderFactory = (
   teamName: string = undefined,
   tag: string = undefined,
   component: string = undefined,
-  apiList: apiListObject[] = undefined,
+  apiList: apiListObject = undefined,
   path: string
 ): SmartAPISpec[] => {
   let loader;
   if (!(typeof smartAPIID === "undefined")) {
-    loader = new SingleSpecSyncLoader(smartAPIID, path);
-    debug("Using single spec sync loader now.");
-  } else if (!(typeof teamName === "undefined")) {
-    loader = new TeamSpecsSyncLoader(teamName, path);
+    loader = new SingleSpecSyncLoader(smartAPIID, apiList, path);
+    debug("Using single spec sync loader now."); } else if (!(typeof teamName === "undefined")) {
+    loader = new TeamSpecsSyncLoader(teamName, apiList, path);
     debug("Using team spec sync loader now.");
   } else if (!(typeof tag === "undefined")) {
-    loader = new TagSpecsSyncLoader(tag, path);
+    loader = new TagSpecsSyncLoader(tag, apiList, path);
     debug("Using tags spec sync loader now.");
   } else if (!(typeof component === "undefined")) {
-    loader = new ComponentSpecsSyncLoader(component, path);
+    loader = new ComponentSpecsSyncLoader(component, apiList, path);
     debug("Using component spec sync loader now.");
-  } else if (Array.isArray(apiList)) {
+  } else if (!(typeof apiList === "undefined")) {
     loader = new APIListSpecsSyncLoader(apiList, path);
     debug("Using api list spec sync loader now.");
   } else {

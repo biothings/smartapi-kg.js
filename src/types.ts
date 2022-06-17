@@ -4,9 +4,14 @@ export interface SmartAPIQueryResult {
   hits: SmartAPISpec[];
 }
 
-export interface apiListObject {
+export interface apiListItem {
   id: string;
   name: string;
+}
+
+export interface apiListObject {
+  include: apiListItem[];
+  exclude: apiListItem[];
 }
 
 export interface BuilderOptions {
@@ -14,7 +19,7 @@ export interface BuilderOptions {
   teamName?: string;
   smartAPIID?: string;
   component?: string;
-  apiList?: apiListObject[]; 
+  apiList?: apiListObject;
 }
 
 interface PredicatesQueryOperationInterface {
