@@ -5,14 +5,17 @@ import Debug from "debug";
 const debug = Debug("bte:smartapi-kg:APIListSpecsSyncLoader");
 
 export default class APIListSpecsSyncLoader extends AllSpecsSyncLoader {
-  private _apiList: apiListObject;
+  private _apiList: apiListObject | undefined;
 
-  constructor(apiList: apiListObject, path: string) {
+  constructor(path: string, apiList?: apiListObject) {
     super(path);
     this._apiList = apiList;
   }
 
   parse(input: SmartAPIQueryResult): SmartAPISpec[] {
+    if (!this._apiList) {
+      return input.hits;
+    }
     return input.hits
       .filter(item => {
         let api = this._apiList.include.find(api => api.id === item._id);

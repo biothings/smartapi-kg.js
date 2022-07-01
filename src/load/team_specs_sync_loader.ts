@@ -5,13 +5,13 @@ import APIListSpecsSyncLoader from "./api_list_specs_sync_loader";
 export default class TeamSpecsSyncLoader extends APIListSpecsSyncLoader {
   private _teamName: string;
 
-  constructor(teamName: string, apiList: apiListObject, path: string) {
-    super(apiList, path);
+  constructor(teamName: string, path: string, apiList?: apiListObject) {
+    super(path, apiList);
     this._teamName = teamName;
   }
 
   parse(input: SmartAPIQueryResult): SmartAPISpec[] {
-    return input.hits.filter(
+    return super.parse(input).filter(
       (item) =>
         "x-translator" in item.info &&
         "team" in item.info["x-translator"] &&

@@ -16,10 +16,10 @@
     "include": [
         "./src/**/*",
         "./src/data/smartapi_specs.json",
-        "./src/data/predicates.json"
+        "./src/data/predicates.json",
     ],
     "exclude": [
         "node_modules",
         "__tests__/"
-    ]
+    ],
 }
