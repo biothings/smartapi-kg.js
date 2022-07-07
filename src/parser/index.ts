@@ -83,7 +83,26 @@ export default class API implements APIClass {
     if (!("servers" in this.smartapiDoc)) {
       return undefined;
     }
-    return this.smartapiDoc.servers[0].url;
+
+    const getLevel = (maturity: string) => {
+      if (maturity == 'production') return 0;
+      if (maturity == 'staging') return 1;
+      return 2;
+    }
+
+    const servers = this.smartapiDoc.servers.map(server => ({
+      url: server.url,
+      level: getLevel(server["x-maturity"]),
+      https: server.url.includes("https")
+    }))
+
+    const sorted_servers = servers.sort((a, b) => {
+      if (a.level != b.level) return a.level - b.level
+      if (a.https != b.https) return a.https ? -1 : 1;
+      return 0;
+    })
+
+    return sorted_servers[0].url;
   }
 
   /**
