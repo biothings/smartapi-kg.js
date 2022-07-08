@@ -3,7 +3,8 @@ type FIELDS_FOR_FILTER =
   | "output_type"
   | "predicate"
   | "api_name"
-  | "source";
+  | "source"
+  | "component";
 
 export const FILTER_FIELDS: FIELDS_FOR_FILTER[] = [
   "input_type",
@@ -11,6 +12,7 @@ export const FILTER_FIELDS: FIELDS_FOR_FILTER[] = [
   "predicate",
   "api_name",
   "source",
+  "component"
 ];
 
 export const SMARTAPI_URL =
