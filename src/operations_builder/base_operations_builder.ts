@@ -21,6 +21,7 @@ export default abstract class BaseOperationsBuilder {
         const ops = parser.metadata.operations;
         allOps = [...allOps, ...ops];
       } catch (err) {
+        // debug(JSON.stringify(spec.paths))
         debug(
           `[error]: Unable to parse spec, ${
             spec ? spec.info.title : spec

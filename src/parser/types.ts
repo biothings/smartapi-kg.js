@@ -150,6 +150,7 @@ interface KGAssociationObject {
   predicate: string;
   source?: string;
   api_name?: string;
+  component?: string;
   smartapi?: SmartAPIRegistryRecordObject;
   "x-translator"?: any;
 }

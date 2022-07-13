@@ -55,6 +55,7 @@ export interface FilterCriteria {
   predicate?: undefined | string | string[];
   api_name?: undefined | string | string[];
   source?: undefined | string | string[];
+  component?: undefined | string | string[];
   [propName: string]: undefined | string | string[];
 }
 
