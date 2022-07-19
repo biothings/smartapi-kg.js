@@ -10,7 +10,10 @@ describe("Test filter function", () => {
                 output_type: "Disease",
                 output_id: "MONDO",
                 predicate: "PRED1",
-                source: "SOURCE1"
+                source: "SOURCE1",
+                'x-translator': {
+                    component: 'KP'
+                }
             }
         },
         {
@@ -21,7 +24,10 @@ describe("Test filter function", () => {
                 output_id: "CHEBI",
                 predicate: "PRED2",
                 source: "SOURCE2",
-                api_name: "API1"
+                api_name: "API1",
+                'x-translator': {
+                    component: 'KP'
+                }
             }
         },
         {
@@ -31,7 +37,10 @@ describe("Test filter function", () => {
                 output_type: "SmallMolecule",
                 output_id: "CHEBI",
                 predicate: "PRED3",
-                source: "SOURCE3"
+                source: "SOURCE3",
+                'x-translator': {
+                    component: 'KP'
+                }
             }
         },
         {
@@ -42,13 +51,22 @@ describe("Test filter function", () => {
                 output_id: "MONDO",
                 predicate: "PRED2",
                 source: "SOURCE3",
-                api_name: "API1"
+                api_name: "API1",
+                'x-translator': {
+                    component: 'ARA'
+                }
             }
         },
     ]
     test("Return only ops with input type gene when specifying input type as gene in string", () => {
         const res = ft(ops, { input_type: "Gene" });
         expect(res).toHaveLength(ops.filter(op => op.association.input_type === "Gene").length);
+        expect(res[0].association.source).toEqual("SOURCE1");
+    })
+
+    test("Return only KP ops", () => {
+        const res = ft(ops, { component: "KP" });
+        expect(res).toHaveLength(ops.filter(op => op.association['x-translator'].component === "KP").length);
         expect(res[0].association.source).toEqual("SOURCE1");
     })
 
