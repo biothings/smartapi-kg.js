@@ -47,7 +47,7 @@ export default class SyncOperationsBuilderWithReasoner extends BaseOperationsBui
                 input_type: this.removeBioLinkPrefix(sbj),
                 input_id: metadata?.nodes[sbj]?.id_prefixes,
                 output_type: this.removeBioLinkPrefix(obj),
-                output_id: metadata?.nodes[sbj]?.id_prefixes,
+                output_id: metadata?.nodes[obj]?.id_prefixes,
                 predicate: this.removeBioLinkPrefix(pred),
                 api_name: metadata.association.api_name,
                 smartapi: metadata.association.smartapi,
