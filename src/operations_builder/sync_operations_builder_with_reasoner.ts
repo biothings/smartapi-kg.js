@@ -50,6 +50,7 @@ export default class SyncOperationsBuilderWithReasoner extends BaseOperationsBui
                 api_name: metadata.association.api_name,
                 smartapi: metadata.association.smartapi,
                 "x-translator": metadata.association["x-translator"],
+                "x-trapi": metadata.association["x-trapi"],
               },
               tags: [...metadata.tags, ...["bte-trapi"]],
               query_operation: {

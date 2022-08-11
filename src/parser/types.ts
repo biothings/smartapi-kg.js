@@ -142,6 +142,11 @@ export interface SmartAPIRegistryRecordObject {
   meta: any;
 }
 
+export interface XTRAPIObject {
+  batch_size_limit?: number;
+  rate_limit?: number;
+}
+
 interface KGAssociationObject {
   input_id?: string;
   input_type: string;
@@ -153,6 +158,7 @@ interface KGAssociationObject {
   component?: string;
   smartapi?: SmartAPIRegistryRecordObject;
   "x-translator"?: any;
+  "x-trapi"?: XTRAPIObject;
 }
 
 export interface QueryOperationInterface {

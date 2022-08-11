@@ -107,7 +107,7 @@ export default class API implements APIClass {
       "x-translator": {
         component: this.fetchXTranslatorComponent(),
         team: this.fetchXTranslatorTeam(),
-        "infores": this.fetchXTranslatorInforesCurie() 
+        "infores": this.fetchXTranslatorInforesCurie()
       },
       smartapi: {
         id: this.smartapiDoc._id,
