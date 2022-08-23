@@ -45,6 +45,15 @@ export interface PredicatesMetadata {
   tags: string[];
   query_operation: PredicatesQueryOperationInterface;
   predicates: ReasonerPredicatesResponse;
+  nodes?: PredicatesNodes;
+}
+
+interface PredicatesNodes {
+  [propName: string]: PredicatesNode
+}
+
+interface PredicatesNode {
+  id_prefixes?: string[]
 }
 
 interface ReasonerSubjectAndPredicate {

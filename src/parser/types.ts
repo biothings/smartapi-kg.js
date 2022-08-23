@@ -148,9 +148,9 @@ export interface XTRAPIObject {
 }
 
 interface KGAssociationObject {
-  input_id?: string;
+  input_id?: string | string[];
   input_type: string;
-  output_id?: string;
+  output_id?: string | string[];
   output_type: string;
   predicate: string;
   source?: string;
