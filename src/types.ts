@@ -9,6 +9,11 @@ export interface apiListItem {
   name: string;
 }
 
+export interface XTRAPIObject {
+  batch_size_limit?: number;
+  rate_limit?: number;
+}
+
 export interface apiListObject {
   include: apiListItem[];
   exclude: apiListItem[];
@@ -32,6 +37,7 @@ interface PredicatesAssociationInterface {
   api_name: string;
   smartapi: SmartAPIRegistryRecordObject;
   "x-translator": any;
+  "x-trapi"?: XTRAPIObject;
 }
 
 export interface PredicatesMetadata {
