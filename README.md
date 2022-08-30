@@ -1,20 +1,11 @@
-<h1 align="center">Welcome to @biothings-explorer/smartapi-kg 👋</h1>
+# Welcome to @biothings-explorer/smartapi-kg 👋
 
-<p>
-  
-  <a href='https://coveralls.io/github/biothings/smartapi-kg.js'><img src='https://coveralls.io/repos/github/biothings/smartapi-kg.js/badge.svg' alt='Coverage Status' /></a>
-  <a href="https://www.npmjs.com/package/@biothings-explorer/smartapi-kg" target="_blank">
-    <img alt="Version" src="https://img.shields.io/npm/v/@biothings-explorer/smartapi-kg.svg">
-  </a>
-  <a href="https://github.com/biothings/smartapi-kg.js#readme" target="_blank">
-    <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
-  </a>
-  <a href="https://github.com/biothings/smartapi-kg.js/graphs/commit-activity" target="_blank">
-    <img alt="Maintenance" src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" />
-  </a>
-</p>
+[![codecov](https://codecov.io/gh/biothings/smartapi-kg.js/branch/main/graph/badge.svg?token=61ROF3R6C4)](https://codecov.io/gh/biothings/smartapi-kg.js)
+[![Test Codecov](https://github.com/biothings/smartapi-kg.js/actions/workflows/test_cov.yml/badge.svg)](https://github.com/biothings/smartapi-kg.js/actions/workflows/test_cov.yml)
+[![npm](https://img.shields.io/npm/v/@biothings-explorer/smartapi-kg.svg)](https://www.npmjs.com/package/@biothings-explorer/smartapi-kg)
+[![documentation](https://img.shields.io/badge/documentation-yes-brightgreen.svg)](https://github.com/biothings/smartapi-kg.js#readme)
+[![Maintained?](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/biothings/smartapi-kg.js/graphs/commit-activity)
 
-[![Test](https://github.com/biothings/smartapi-kg.js/actions/workflows/test.yml/badge.svg)](https://github.com/biothings/smartapi-kg.js/actions/workflows/test.yml)
 > Generate a meta knowledge graph of how biomedical concepts are connected based on SmartAPI Specifications with built-in filtering capabilities
 
 ### 🏠 [Homepage](https://github.com/biothings/smartapi-kg.js#readme)
@@ -49,7 +40,7 @@ npm i @biothings-explorer/smartapi-kg
     ```javascript
     await meta_kg.constructMetaKG(includeReasoner=true);
     ```
-  
+
   - Option 3: Load Meta-KG from SmartAPI specs with tags equal to biothings
 
     ```javascript
@@ -90,7 +81,7 @@ npm i @biothings-explorer/smartapi-kg
       let meta_kg = new MetaKG(file_path);
       meta_kg.constructMetaKGSync();
     ```
-  
+
   - Option 9: Load Meta-KG with an api list
     ```javascript
     meta_kg.constructMetaKGSync(includeReasoner=true, {apiList: [
