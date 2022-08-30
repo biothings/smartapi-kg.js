@@ -126,11 +126,12 @@ describe('Test constructMetaKG from local stored specs', () => {
     });
 
     test("Test construct meta-kg sync including reasoner", () => {
+        let meta_kg_without = new MetaKG();
+        meta_kg_without.constructMetaKGSync();
         let meta_kg = new MetaKG();
         meta_kg.constructMetaKGSync(true);
         expect(meta_kg.ops).toBeInstanceOf(Array);
-        const res = meta_kg.ops.filter(op => !('input_id' in op.association));
-        expect(res.length).toBeGreaterThan(100);
+        expect(meta_kg.ops.length).toBeGreaterThan(meta_kg_without.ops.length);
     });
 
     test("Test construct meta-kg with tag equal to biothings", () => {
