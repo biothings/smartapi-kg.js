@@ -1,10 +1,11 @@
 # Welcome to @biothings-explorer/smartapi-kg 👋
 
-[![codecov](https://codecov.io/gh/biothings/smartapi-kg.js/branch/main/graph/badge.svg?token=61ROF3R6C4)](https://codecov.io/gh/biothings/smartapi-kg.js)
 [![Test Codecov](https://github.com/biothings/smartapi-kg.js/actions/workflows/test_cov.yml/badge.svg)](https://github.com/biothings/smartapi-kg.js/actions/workflows/test_cov.yml)
+[![codecov](https://codecov.io/gh/biothings/smartapi-kg.js/branch/main/graph/badge.svg?token=61ROF3R6C4)](https://codecov.io/gh/biothings/smartapi-kg.js)
 [![npm](https://img.shields.io/npm/v/@biothings-explorer/smartapi-kg.svg)](https://www.npmjs.com/package/@biothings-explorer/smartapi-kg)
 [![documentation](https://img.shields.io/badge/documentation-yes-brightgreen.svg)](https://github.com/biothings/smartapi-kg.js#readme)
 [![Maintained?](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/biothings/smartapi-kg.js/graphs/commit-activity)
+
 
 > Generate a meta knowledge graph of how biomedical concepts are connected based on SmartAPI Specifications with built-in filtering capabilities
 
