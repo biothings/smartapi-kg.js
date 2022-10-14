@@ -111,6 +111,7 @@ export interface XBTEKGSOperationObject {
   inputs: XBTEKGSOperationBioEntityObject[];
   outputs: XBTEKGSOperationBioEntityObject[];
   predicate: string;
+  qualifiers?: { [qualifierType: string]: string; };
   source?: string;
   parameters?: XBTEParametersObject;
   requestBody?: any;
