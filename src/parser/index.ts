@@ -83,7 +83,50 @@ export default class API implements APIClass {
     if (!("servers" in this.smartapiDoc)) {
       return undefined;
     }
-    return this.smartapiDoc.servers[0].url;
+
+    const productionLevel = process.env.INSTANCE_ENV ?? '';
+
+    const getLevel = (maturity: string) => {
+      switch (productionLevel) {
+        case 'prod':
+          if (maturity == 'production') return 0;
+          return 10000;
+        case 'test':
+          if (maturity == 'testing') return 0;
+          if (maturity == 'production') return 1;
+          return 10000;
+        case 'ci':
+          if (maturity == 'staging') return 0;
+          if (maturity == 'testing') return 1;
+          if (maturity == 'production') return 2;
+          return 10000;
+        default:
+          if (maturity == 'development') return 0;
+          if (maturity == 'staging') return 1;
+          if (maturity == 'testing') return 2;
+          if (maturity == 'production') return 3;
+          return 10000;
+      }
+    }
+
+    const servers = this.smartapiDoc.servers.map(server => ({
+      url: server.url,
+      level: getLevel(server["x-maturity"]),
+      maturity: server["x-maturity"],
+      https: server.url.includes("https")
+    }))
+
+    const sorted_servers = servers.sort((a, b) => {
+      if (a.level != b.level) return a.level - b.level
+      if (a.https != b.https) return a.https ? -1 : 1;
+      return 0;
+    })
+
+    if (sorted_servers[0].level != 10000) {
+      return sorted_servers[0].url;
+    }
+    console.log(`Server ${sorted_servers[0].url} skipped due to insufficient maturity level ${sorted_servers[0].maturity}`)
+    return undefined;
   }
 
   /**
