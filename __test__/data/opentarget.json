@@ -14,7 +14,8 @@
     "servers": [
         {
             "description": "Production server",
-            "url": "https://platform-api.opentargets.io/v3"
+            "url": "https://platform-api.opentargets.io/v3",
+            "x-maturity": "production"
         }
     ],
     "tags": [
