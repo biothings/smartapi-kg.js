@@ -57,7 +57,7 @@ export const ft = (ops: SmartAPIKGOperationObject[], criteria: FilterCriteria) =
         return filters[field].has(rec.association["x-translator"][field]) ? true : false;
       } else if (field === "qualifiers") {
         // return true;
-        if (rec.tags?.includes?.('bte-trapi') || filters[field].size < 1) {
+        if (rec.tags?.includes?.("bte-trapi") || criteria[field] === undefined || criteria[field].length < 1) {
           return true;
         }
         return [...filters[field]].some(qualifierConstraintSet => {
