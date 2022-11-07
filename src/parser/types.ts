@@ -160,6 +160,9 @@ interface KGAssociationObject {
   smartapi?: SmartAPIRegistryRecordObject;
   "x-translator"?: any;
   "x-trapi"?: XTRAPIObject;
+  qualifiers?: {
+    [qualifierType: string]: string;
+  }
 }
 
 export interface QueryOperationInterface {
