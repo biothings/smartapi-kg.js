@@ -135,6 +135,7 @@ export interface SmartAPISpec {
   components?: SmartAPIComponentObject;
   _id?: string;
   _meta?: string;
+  ["x-bte-transformer"]: string;
 }
 
 export interface SmartAPIRegistryRecordObject {
@@ -171,6 +172,7 @@ export interface QueryOperationInterface {
   request_body: object;
   supportBatch: boolean;
   inputSeparator: string;
+  transformer: string;
 }
 
 export interface SmartAPIKGOperationObject {
@@ -190,6 +192,7 @@ export interface ParsedAPIMetadataObject {
   smartapi: SmartAPIRegistryRecordObject;
   "x-translator": XTranslatorObject;
   operations: SmartAPIKGOperationObject[];
+  transformer: string;
 }
 
 export interface XBTEParametersObject {

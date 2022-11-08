@@ -18,6 +18,7 @@ export default class QueryOperationObject implements QueryOperationInterface {
   private _tags: string[];
   private _pathParams: string[];
   private _templateInputs: object;
+  private _transformer: string;
 
   set xBTEKGSOperation(newOp: XBTEKGSOperationObject) {
     this._params = newOp.parameters;
@@ -60,6 +61,14 @@ export default class QueryOperationObject implements QueryOperationInterface {
 
   get inputSeparator(): string {
     return this._inputSeparator;
+  }
+
+  get transformer(): string {
+    return this._transformer;
+  }
+
+  set transformer(newTransformer: string) {
+    this._transformer = newTransformer;
   }
 
   set path(newPath: string) {
