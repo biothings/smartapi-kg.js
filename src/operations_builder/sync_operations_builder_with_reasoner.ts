@@ -65,6 +65,7 @@ export default class SyncOperationsBuilderWithReasoner extends BaseOperationsBui
                 supportBatch: true,
                 inputSeparator: ",",
                 tags: [...metadata.tags, ...["bte-trapi"]],
+                transformer: metadata.query_operation.transformer
               },
             });
           });
