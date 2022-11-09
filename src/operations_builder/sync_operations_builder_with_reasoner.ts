@@ -73,24 +73,46 @@ export default class SyncOperationsBuilderWithReasoner extends BaseOperationsBui
     });
     if (!(typeof this._options.apiList === "undefined")) {
       return ops
-        .filter(op => {
-          let api = this._options.apiList.include.find(api => api.id === op.association.smartapi.id);
-          if (api && api.name !== op.association.api_name) {
-            debug(
-              `Expected to get '${api.name}' with smartapi-id:${api.id} but instead got '${op.association.api_name}'`,
-            );
-          }
-          return api;
-        })
-        .filter(op => {
-          let api = this._options.apiList.exclude.find(api => api.id === op.association.smartapi.id);
-          if (api && api.name !== op.association.api_name) {
-            debug(
-              `Expected to get '${api.name}' with smartapi-id:${api.id} but instead got '${op.association.api_name}'`,
-            );
-          }
-          return !api;
-        });
+      .filter(op => {
+        const includeSmartAPI = this._options.apiList.include.find(api => api.id === op.id);
+        const includeInfoRes = this._options.apiList.include.find(api => api.id === op.association?.["x-translator"]?.infores)
+        const excludeSmartAPI = this._options.apiList.exclude.find(api => api.id === op.id);
+        const excludeInfoRes = this._options.apiList.exclude.find(api => api.id === op.association?.["x-translator"]?.infores)
+        
+        let willBeIncluded;
+        let apiValue;
+        if (excludeSmartAPI) {
+          willBeIncluded = false;
+          apiValue = excludeSmartAPI;
+        } else if (includeSmartAPI) {
+          willBeIncluded = true;
+          apiValue = includeSmartAPI;
+        } else if (excludeInfoRes) {
+          willBeIncluded = false;
+          apiValue = excludeInfoRes;
+        } else if (includeInfoRes) {
+          apiValue = includeInfoRes;
+          willBeIncluded = true;
+        } else {
+          apiValue = undefined;
+          willBeIncluded = false;
+        }
+
+        if (apiValue && apiValue.name !== op.association.api_name) {
+          debug(`Expected to get '${apiValue.name}' with smartapi-id:${apiValue.id} but instead got '${item.info.title}'`);
+        }
+
+        return willBeIncluded;
+      })
+        // .filter(op => {
+        //   let api = this._options.apiList.exclude.find(api => api.id === op.association.smartapi.id);
+        //   if (api && api.name !== op.association.api_name) {
+        //     debug(
+        //       `Expected to get '${api.name}' with smartapi-id:${api.id} but instead got '${op.association.api_name}'`,
+        //     );
+        //   }
+        //   return !api;
+        // });
     }
     return ops;
   }
