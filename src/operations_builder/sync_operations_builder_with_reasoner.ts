@@ -74,9 +74,9 @@ export default class SyncOperationsBuilderWithReasoner extends BaseOperationsBui
     if (!(typeof this._options.apiList === "undefined")) {
       return ops
       .filter(op => {
-        const includeSmartAPI = this._options.apiList.include.find(api => api.id === op.id);
+        const includeSmartAPI = this._options.apiList.include.find(api => api.id === op.association.smartapi.id);
         const includeInfoRes = this._options.apiList.include.find(api => api.id === op.association?.["x-translator"]?.infores)
-        const excludeSmartAPI = this._options.apiList.exclude.find(api => api.id === op.id);
+        const excludeSmartAPI = this._options.apiList.exclude.find(api => api.id === op.association.smartapi.id);
         const excludeInfoRes = this._options.apiList.exclude.find(api => api.id === op.association?.["x-translator"]?.infores)
         
         let willBeIncluded;
@@ -99,7 +99,7 @@ export default class SyncOperationsBuilderWithReasoner extends BaseOperationsBui
         }
 
         if (apiValue && apiValue.name !== op.association.api_name) {
-          debug(`Expected to get '${apiValue.name}' with smartapi-id:${apiValue.id} but instead got '${item.info.title}'`);
+          debug(`Expected to get '${apiValue.name}' with smartapi-id:${apiValue.id} but instead got '${op.association.api_name}'`);
         }
 
         return willBeIncluded;
