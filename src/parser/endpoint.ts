@@ -54,7 +54,7 @@ export default class Endpoint {
     queryOperation.server = server;
     queryOperation.path = this.path;
     queryOperation.tags = this.apiMetadata.tags;
-    queryOperation.transformer = this.apiMetadata.transformer;
+    queryOperation.transformer = this.resolveRefIfProvided(op.transformer);
     return queryOperation;
   }
 
@@ -68,10 +68,9 @@ export default class Endpoint {
     return input;
   }
 
-  private resolveRefIfProvided(rec: SmartAPIReferenceObject) {
-    return "$ref" in rec
-      ? this.apiMetadata.components.fetchComponentByRef(rec.$ref)
-      : rec;
+  private resolveRefIfProvided(rec?: SmartAPIReferenceObject) {
+    if (typeof rec !== "object") return rec;
+    return this.apiMetadata.components.fetchComponentByRef(rec.$ref)
   }
 
   private constructAssociation(
@@ -104,7 +103,7 @@ export default class Endpoint {
   private parseIndividualOperation({
     op,
     method,
-    pathParams,
+    pathParams
   }: {
     op: XBTEKGSOperationObject;
     method: string;

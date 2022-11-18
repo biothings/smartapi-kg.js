@@ -15,8 +15,6 @@ export default class API implements APIClass {
    */
   constructor(smartapiDoc: SmartAPISpec) {
     this._smartapiDoc = smartapiDoc;
-    console.log("xb-te")
-    console.log(smartapiDoc["x-bte-transformer"])
   }
 
   get smartapiDoc(): SmartAPISpec {
@@ -164,7 +162,6 @@ export default class API implements APIClass {
           ? Object.keys(this.smartapiDoc.paths)
           : [],
       operations: [],
-      transformer: this.smartapiDoc["x-bte-transformer"]
     };
   }
 
