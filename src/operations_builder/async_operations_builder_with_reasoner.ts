@@ -83,7 +83,7 @@ export default class AsyncOperationsBuilderWithReasoner extends AsyncOperationsB
                 supportBatch: true,
                 inputSeparator: ",",
                 tags: [...metadata.tags, ...["bte-trapi"]],
-                transformer: "test" //metadata.transformer
+                transformer: undefined
               },
             });
           });
