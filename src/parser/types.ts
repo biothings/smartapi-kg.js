@@ -162,6 +162,10 @@ interface KGAssociationObject {
   "x-trapi"?: XTRAPIObject;
 }
 
+export interface TransformerObject {
+  wrap_jq?: string;
+}
+
 export interface QueryOperationInterface {
   path: string;
   method: string;
@@ -172,7 +176,7 @@ export interface QueryOperationInterface {
   request_body: object;
   supportBatch: boolean;
   inputSeparator: string;
-  transformer: string;
+  transformer: TransformerObject;
 }
 
 export interface SmartAPIKGOperationObject {

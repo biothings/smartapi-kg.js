@@ -2,6 +2,7 @@ import {
   XBTEKGSOperationObject,
   QueryOperationInterface,
   XBTEParametersObject,
+  TransformerObject,
 } from "./types";
 
 export default class QueryOperationObject implements QueryOperationInterface {
@@ -18,7 +19,7 @@ export default class QueryOperationObject implements QueryOperationInterface {
   private _tags: string[];
   private _pathParams: string[];
   private _templateInputs: object;
-  private _transformer: string;
+  private _transformer: TransformerObject;
 
   set xBTEKGSOperation(newOp: XBTEKGSOperationObject) {
     this._params = newOp.parameters;
@@ -63,11 +64,11 @@ export default class QueryOperationObject implements QueryOperationInterface {
     return this._inputSeparator;
   }
 
-  get transformer(): string {
+  get transformer(): TransformerObject {
     return this._transformer;
   }
 
-  set transformer(newTransformer: string) {
+  set transformer(newTransformer: TransformerObject) {
     this._transformer = newTransformer;
   }
 
