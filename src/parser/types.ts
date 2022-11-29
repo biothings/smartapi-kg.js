@@ -164,6 +164,7 @@ interface KGAssociationObject {
 
 export interface TransformerObject {
   wrap_jq?: string;
+  pair_jq?: string;
 }
 
 export interface QueryOperationInterface {
