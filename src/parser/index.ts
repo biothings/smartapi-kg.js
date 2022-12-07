@@ -1,5 +1,7 @@
 import Components from "./component";
 import Endpoint from "./endpoint";
+import Debug from "debug";
+const debug = Debug("bte:smartapi-kg:Parser");
 import {
   SmartAPISpec,
   ParsedAPIMetadataObject,
@@ -125,7 +127,7 @@ export default class API implements APIClass {
     if (sorted_servers[0].level != 10000) {
       return sorted_servers[0].url;
     }
-    console.log(`Server ${sorted_servers[0].url} skipped due to insufficient maturity level ${sorted_servers[0].maturity}`)
+    debug(`Server ${sorted_servers[0].url} skipped due to insufficient maturity level ${sorted_servers[0].maturity}`)
     return undefined;
   }
 
