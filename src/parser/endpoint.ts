@@ -84,6 +84,14 @@ export default class Endpoint {
       output_id: this.removeBioLinkPrefix(output.id),
       output_type: this.removeBioLinkPrefix(output.semantic),
       predicate: this.removeBioLinkPrefix(op.predicate),
+      qualifiers: op.qualifiers
+        ? Object.fromEntries(
+            Object.entries(op.qualifiers).map(([qualifierType, qualifier]) => [
+              this.removeBioLinkPrefix(qualifierType),
+              qualifier,
+            ]),
+          )
+        : undefined,
       source: op.source,
       api_name: this.apiMetadata.title,
       smartapi: this.apiMetadata.smartapi,
