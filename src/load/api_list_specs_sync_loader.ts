@@ -19,9 +19,9 @@ export default class APIListSpecsSyncLoader extends AllSpecsSyncLoader {
     return input.hits
       .filter(item => {
         const includeSmartAPI = this._apiList?.include.find(api => api.id === item._id);
-        const includeInfoRes = this._apiList?.include.find(api => api.id === item.info["x-translator"]?.infores)
+        const includeInfoRes = this._apiList?.include.find(api => api.infores === item.info["x-translator"]?.infores)
         const excludeSmartAPI = this._apiList?.exclude.find(api => api.id === item._id);
-        const excludeInfoRes = this._apiList?.exclude.find(api => api.id === item.info["x-translator"]?.infores)
+        const excludeInfoRes = this._apiList?.exclude.find(api => api.infores === item.info["x-translator"]?.infores)
         
         let willBeIncluded;
         let apiValue;

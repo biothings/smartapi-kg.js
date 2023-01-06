@@ -75,9 +75,9 @@ export default class SyncOperationsBuilderWithReasoner extends BaseOperationsBui
       return ops
       .filter(op => {
         const includeSmartAPI = this._options.apiList.include.find(api => api.id === op.association.smartapi.id);
-        const includeInfoRes = this._options.apiList.include.find(api => api.id === op.association?.["x-translator"]?.infores)
+        const includeInfoRes = this._options.apiList.include.find(api => api.infores === op.association?.["x-translator"]?.infores)
         const excludeSmartAPI = this._options.apiList.exclude.find(api => api.id === op.association.smartapi.id);
-        const excludeInfoRes = this._options.apiList.exclude.find(api => api.id === op.association?.["x-translator"]?.infores)
+        const excludeInfoRes = this._options.apiList.exclude.find(api => api.infores === op.association?.["x-translator"]?.infores)
         
         let willBeIncluded;
         let apiValue;
