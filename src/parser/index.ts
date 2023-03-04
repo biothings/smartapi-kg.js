@@ -113,8 +113,8 @@ export default class API implements APIClass {
 
     const servers = this.smartapiDoc.servers.map(server => ({
       url: server.url,
-      level: getLevel(server["x-maturity"]),
-      maturity: server["x-maturity"],
+      level: getLevel(server["x-maturity"] ?? "production"),
+      maturity: server["x-maturity"] ?? "production",
       https: server.url.includes("https")
     }))
 
