@@ -79,6 +79,7 @@ export default class Endpoint {
     op: XBTEKGSOperationObject
   ) {
     return {
+      has_prefix: output.hasPrefix,
       input_id: this.removeBioLinkPrefix(input.id),
       input_type: this.removeBioLinkPrefix(input.semantic),
       output_id: this.removeBioLinkPrefix(output.id),

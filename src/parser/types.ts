@@ -105,6 +105,7 @@ export interface SmartAPIComponentObject {
 export interface XBTEKGSOperationBioEntityObject {
   id: string;
   semantic: string;
+  hasPrefix?: boolean;
 }
 
 export interface XBTEKGSOperationObject {
