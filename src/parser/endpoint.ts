@@ -72,7 +72,7 @@ export default class Endpoint {
   }
 
   private resolveRefIfProvided(rec?: SmartAPIReferenceObject) {
-    if (typeof rec !== "object") return rec;
+    if (typeof rec !== "object" || !rec.$ref) return rec;
     return this.apiMetadata.components.fetchComponentByRef(rec.$ref)
   }
 
