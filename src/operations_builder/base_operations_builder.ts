@@ -18,6 +18,7 @@ export default abstract class BaseOperationsBuilder {
     specs.map((spec) => {
       try {
         const parser = new API(spec);
+        if (!parser.metadata.url) throw new Error("No suitable server present")
         const ops = parser.metadata.operations;
         allOps = [...allOps, ...ops];
       } catch (err) {
