@@ -37,6 +37,7 @@ interface PredicatesQueryOperationInterface {
 interface PredicatesAssociationInterface {
   api_name: string;
   smartapi: SmartAPIRegistryRecordObject;
+  association_id: string;
   "x-translator": any;
   "x-trapi"?: XTRAPIObject;
 }
@@ -58,7 +59,7 @@ interface PredicatesNode {
 }
 
 interface ReasonerSubjectAndPredicate {
-  [propName: string]: string[];
+  [propName: string]: any[];
 }
 
 export interface ReasonerPredicatesResponse {
