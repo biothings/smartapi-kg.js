@@ -37,7 +37,6 @@ interface PredicatesQueryOperationInterface {
 interface PredicatesAssociationInterface {
   api_name: string;
   smartapi: SmartAPIRegistryRecordObject;
-  association_id?: string;
   "x-translator": any;
   "x-trapi"?: XTRAPIObject;
 }
