@@ -111,7 +111,7 @@ export interface XBTEKGSOperationObject {
   inputs: XBTEKGSOperationBioEntityObject[];
   outputs: XBTEKGSOperationBioEntityObject[];
   predicate: string;
-  association_id?: string;
+  biolink_association_type?: string;
   qualifiers?: { [qualifierType: string]: string; };
   source?: string;
   parameters?: XBTEParametersObject;
