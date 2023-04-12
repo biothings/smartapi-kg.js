@@ -51,6 +51,7 @@ export default class SyncOperationsBuilderWithReasoner extends BaseOperationsBui
                 predicate: this.removeBioLinkPrefix(typeof(pred) === "string" ? pred : pred.predicate),
                 api_name: metadata.association.api_name,
                 smartapi: metadata.association.smartapi,
+                association_id: typeof(pred) === "string" ? undefined : pred.association_id,
                 qualifiers: typeof(pred) === "string" ? undefined : pred.qualifiers,
                 "x-translator": metadata.association["x-translator"],
                 "x-trapi": metadata.association["x-trapi"],
