@@ -62,6 +62,9 @@ export const ft = (ops: SmartAPIKGOperationObject[], criteria: FilterCriteria) =
         }
         return [...filters[field]].some(qualifierConstraintSet => {
           return Object.entries(qualifierConstraintSet).every(([qualifierType, qualifierValue]) => {
+            if (Array.isArray(qualifierValue)) {
+                return rec.association[field] && qualifierValue.includes(rec.association[field][qualifierType]);
+            }
             return rec.association[field] && rec.association[field][qualifierType] === qualifierValue;
           });
         });
