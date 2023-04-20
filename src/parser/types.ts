@@ -161,7 +161,7 @@ interface KGAssociationObject {
   "x-translator"?: any;
   "x-trapi"?: XTRAPIObject;
   qualifiers?: {
-    [qualifierType: string]: string;
+    [qualifierType: string]: string | string[];
   }
 }
 
