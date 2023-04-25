@@ -1,6 +1,6 @@
 import { asyncBuilderFactory } from "./operations_builder/async_builder_factory";
 import { syncBuilderFactory } from "./operations_builder/sync_builder_factory";
-import { SmartAPIKGOperationObject } from "./parser/types";
+import { SmartAPIKGOperationObject, SmartAPIKGOperationMapping } from "./parser/types";
 import { BuilderOptions, FilterCriteria } from "./types";
 import { ft } from "./filter";
 import path from "path";
@@ -9,6 +9,7 @@ const debug = Debug("bte:smartapi-kg:MetaKG");
 
 export default class MetaKG {
   private _ops: SmartAPIKGOperationObject[];
+  private _mapped_ops: SmartAPIKGOperationMapping;
   private _file_path: string;
   private _predicates_path: string;
   /**
@@ -68,6 +69,48 @@ export default class MetaKG {
       this._predicates_path
     );
     return this.ops;
+  }
+
+  /**
+   * Construct Meta Knowledge Graph mapped to nodes (after original Meta Knowledge Graph constructed)
+   */
+  constructMappedMetaKG(): SmartAPIKGOperationMapping {
+    if (!this.ops) return {};
+    this._mapped_ops = {};
+    for (let op of this.ops) {
+        if (!this._mapped_ops[op.association.input_type]) this._mapped_ops[op.association.input_type] = [];
+        this._mapped_ops[op.association.input_type].push(op);
+    }
+    return this._mapped_ops;
+  }
+
+  /**
+   * Finds a path between two nodes
+   */
+  findPath(startNode: string, endNode: string, minLength: number, maxLength: number, repeatedNodes: boolean): string[][] {
+    if (!this._mapped_ops) this.constructMappedMetaKG();
+    if (!this._mapped_ops[startNode] || !this._mapped_ops[endNode]) return null;
+
+    const stack: [string[], number][] = [[[startNode], 0]];
+    const answers: string[][] = [];
+
+    while (stack.length) {
+        const [curPath, hops] = stack.pop();
+        console.log("cur path", curPath)
+        if (hops >= minLength && curPath[curPath.length-1] === endNode) answers.push(curPath);
+        if (hops >= maxLength) continue;
+
+        const predicateOuptutPairs: Set<string> = new Set();
+        for (const op of (this._mapped_ops[curPath[curPath.length-1]] ?? [])) {
+            if (curPath.includes(op.association.output_type) && !repeatedNodes) continue;
+            if (predicateOuptutPairs.has(`${op.association.predicate}-${op.association.output_type}`)) continue;
+            predicateOuptutPairs.add(`${op.association.predicate}-${op.association.output_type}`);
+
+            stack.push([[...curPath, op.association.predicate, op.association.output_type], hops+1]);
+        }
+    }
+
+    return answers;
   }
 
   /**
