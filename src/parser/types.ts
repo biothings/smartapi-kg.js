@@ -185,6 +185,10 @@ export interface SmartAPIKGOperationObject {
   tags?: string[];
 }
 
+export interface SmartAPIKGOperationMapping {
+  [entity: string]: SmartAPIKGOperationObject[];
+}
+
 export interface ParsedAPIMetadataObject {
   title: string;
   tags: string[];
