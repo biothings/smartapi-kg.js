@@ -89,7 +89,8 @@ export default class MetaKG {
    */
   findPath(startNode: string, endNode: string, minLength: number, maxLength: number, repeatedNodes: boolean): string[][] {
     if (!this._mapped_ops) this.constructMappedMetaKG();
-    if (!this._mapped_ops[startNode] || !this._mapped_ops[endNode]) return null;
+    if (!this._mapped_ops[startNode] || !this._mapped_ops[endNode]) return [];
+    if (minLength > maxLength) return [];
 
     const stack: [string[], number][] = [[[startNode], 1]];
     const answers: string[][] = [];
