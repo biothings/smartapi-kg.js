@@ -91,7 +91,7 @@ export default class MetaKG {
     if (!this._mapped_ops) this.constructMappedMetaKG();
     if (!this._mapped_ops[startNode] || !this._mapped_ops[endNode]) return null;
 
-    const stack: [string[], number][] = [[[startNode], 0]];
+    const stack: [string[], number][] = [[[startNode], 1]];
     const answers: string[][] = [];
 
     while (stack.length) {
