@@ -96,8 +96,7 @@ export default class MetaKG {
 
     while (stack.length) {
         const [curPath, hops] = stack.pop();
-        console.log("cur path", curPath)
-        if (hops >= minLength && curPath[curPath.length-1] === endNode) answers.push(curPath);
+        if (hops >= minLength && curPath[curPath.length-1] === endNode) {answers.push(curPath);console.log(curPath);}
         if (hops >= maxLength) continue;
 
         const predicateOuptutPairs: Set<string> = new Set();
