@@ -97,12 +97,12 @@ export default class MetaKG {
 
     while (stack.length) {
         const [curPath, hops] = stack.pop();
-        if (hops >= minLength && curPath[curPath.length-1] === endNode) {answers.push(curPath);console.log(curPath);}
+        if (hops >= minLength && curPath[curPath.length-1] === endNode) {answers.push(curPath);}
         if (hops >= maxLength) continue;
 
         const predicateOuptutPairs: Set<string> = new Set();
         for (const op of (this._mapped_ops[curPath[curPath.length-1]] ?? [])) {
-            if (curPath.includes(op.association.output_type) && !repeatedNodes) continue;
+            if (!repeatedNodes && curPath.includes(op.association.output_type)) continue;
             if (predicateOuptutPairs.has(`${op.association.predicate}-${op.association.output_type}`)) continue;
             predicateOuptutPairs.add(`${op.association.predicate}-${op.association.output_type}`);
 
