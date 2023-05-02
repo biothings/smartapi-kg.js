@@ -111,6 +111,7 @@ export interface XBTEKGSOperationObject {
   inputs: XBTEKGSOperationBioEntityObject[];
   outputs: XBTEKGSOperationBioEntityObject[];
   predicate: string;
+  biolink_association_type?: string;
   qualifiers?: { [qualifierType: string]: string; };
   source?: string;
   parameters?: XBTEParametersObject;
@@ -158,6 +159,7 @@ interface KGAssociationObject {
   api_name?: string;
   component?: string;
   smartapi?: SmartAPIRegistryRecordObject;
+  association_id?: string;
   "x-translator"?: any;
   "x-trapi"?: XTRAPIObject;
   qualifiers?: {
