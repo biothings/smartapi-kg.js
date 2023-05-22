@@ -57,12 +57,20 @@ export const ft = (ops: SmartAPIKGOperationObject[], criteria: FilterCriteria) =
         return filters[field].has(rec.association["x-translator"][field]) ? true : false;
       } else if (field === "qualifiers") {
         // return true;
-        if (rec.tags?.includes?.("bte-trapi") || criteria[field] === undefined || criteria[field].length < 1) {
+        if (criteria[field] === undefined || criteria[field].length < 1) {
           return true;
         }
         return [...filters[field]].some(qualifierConstraintSet => {
           return Object.entries(qualifierConstraintSet).every(([qualifierType, qualifierValue]) => {
-            return rec.association[field] && rec.association[field][qualifierType] === qualifierValue;
+            if (!rec.association[field]) return false;
+            const qualifierValueArray = Array.isArray(qualifierValue) ? qualifierValue : [qualifierValue];
+            const associationValueArray = Array.isArray(rec.association[field][qualifierType])
+              ? rec.association[field][qualifierType]
+              : [rec.association[field][qualifierType]];
+
+            return qualifierValueArray.some(value => {
+              return associationValueArray.includes(value);
+            });
           });
         });
       } else {

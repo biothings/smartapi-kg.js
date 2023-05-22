@@ -48,9 +48,10 @@ export default class SyncOperationsBuilderWithReasoner extends BaseOperationsBui
                 input_id: metadata?.nodes?.[sbj]?.id_prefixes,
                 output_type: this.removeBioLinkPrefix(obj),
                 output_id: metadata?.nodes?.[obj]?.id_prefixes,
-                predicate: this.removeBioLinkPrefix(pred),
+                predicate: this.removeBioLinkPrefix(typeof(pred) === "string" ? pred : pred.predicate),
                 api_name: metadata.association.api_name,
                 smartapi: metadata.association.smartapi,
+                qualifiers: (typeof(pred) === "string" || !pred.qualifiers) ? undefined : Object.fromEntries(pred.qualifiers.map((q: any) => [this.removeBioLinkPrefix(q.qualifier_type_id), q.applicable_values.map(this.removeBioLinkPrefix)])),
                 "x-translator": metadata.association["x-translator"],
                 "x-trapi": metadata.association["x-trapi"],
               },
@@ -78,7 +79,7 @@ export default class SyncOperationsBuilderWithReasoner extends BaseOperationsBui
         const includeInfoRes = this._options.apiList.include.find(api => api.infores === op.association?.["x-translator"]?.infores && api.infores !== undefined)
         const excludeSmartAPI = this._options.apiList.exclude.find(api => api.id === op.association.smartapi.id && api.id !== undefined);
         const excludeInfoRes = this._options.apiList.exclude.find(api => api.infores === op.association?.["x-translator"]?.infores && api.infores !== undefined)
-        
+
         let willBeIncluded;
         let apiValue;
         if (excludeSmartAPI) {

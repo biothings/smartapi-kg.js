@@ -1,7 +1,7 @@
 export interface XTranslatorObject {
   component: string;
   team: string[];
-  "infores"?: string;
+  infores?: string;
 }
 
 interface SmartAIPInfoObject {
@@ -111,7 +111,7 @@ export interface XBTEKGSOperationObject {
   inputs: XBTEKGSOperationBioEntityObject[];
   outputs: XBTEKGSOperationBioEntityObject[];
   predicate: string;
-  qualifiers?: { [qualifierType: string]: string; };
+  qualifiers?: { [qualifierType: string]: string };
   source?: string;
   parameters?: XBTEParametersObject;
   requestBody?: any;
@@ -157,11 +157,12 @@ interface KGAssociationObject {
   source?: string;
   api_name?: string;
   component?: string;
+  apiIsPrimaryKnowledgeSource?: boolean;
   smartapi?: SmartAPIRegistryRecordObject;
   "x-translator"?: any;
   "x-trapi"?: XTRAPIObject;
   qualifiers?: {
-    [qualifierType: string]: string;
+    [qualifierType: string]: string | string[];
   }
 }
 
