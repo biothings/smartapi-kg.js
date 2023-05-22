@@ -70,7 +70,7 @@ export default class AsyncOperationsBuilderWithReasoner extends AsyncOperationsB
                 predicate: this.removeBioLinkPrefix(typeof(pred) === "string" ? pred : pred.predicate),
                 api_name: metadata.title,
                 smartapi: metadata.smartapi,
-                qualifiers: typeof(pred) === "string" ? undefined : pred.qualifiers,
+                qualifiers: (typeof(pred) === "string" || !pred.qualifiers) ? undefined : Object.fromEntries(pred.qualifiers.map((q: any) => [this.removeBioLinkPrefix(q.qualifier_type_id), q.applicable_values.map(this.removeBioLinkPrefix)])),
                 "x-translator": metadata["x-translator"],
               },
               tags: [...metadata.tags, ...["bte-trapi"]],

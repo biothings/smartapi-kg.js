@@ -59,7 +59,7 @@ interface PredicatesNode {
 }
 
 interface ReasonerSubjectAndPredicate {
-  [propName: string]: any[];
+  [propName: string]: (string | any)[];
 }
 
 export interface ReasonerPredicatesResponse {
