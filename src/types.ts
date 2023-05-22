@@ -5,6 +5,7 @@ export interface SmartAPIQueryResult {
 }
 
 export interface apiListItem {
+  primarySource?: boolean;
   id?: string;
   infores?: string;
   name: string;
