@@ -61,17 +61,19 @@ export const ft = (ops: SmartAPIKGOperationObject[], criteria: FilterCriteria) =
           return true;
         }
         return [...filters[field]].some(qualifierConstraintSet => {
-          return Object.entries(qualifierConstraintSet).every(([qualifierType, qualifierValue]) => {
-            if (!rec.association[field]) return false;
-            const qualifierValueArray = Array.isArray(qualifierValue) ? qualifierValue : [qualifierValue];
-            const associationValueArray = Array.isArray(rec.association[field][qualifierType])
-              ? rec.association[field][qualifierType]
-              : [rec.association[field][qualifierType]];
+          return Object.entries(qualifierConstraintSet).every(
+            ([qualifierType, qualifierValue]: [qualifierType: string, qualifierValue: string | string[]]) => {
+              if (!rec.association[field]) return false;
+              const qualifierValueArray = Array.isArray(qualifierValue) ? qualifierValue : [qualifierValue];
+              const associationValueArray = Array.isArray(rec.association[field][qualifierType])
+                ? rec.association[field][qualifierType]
+                : [rec.association[field][qualifierType]];
 
-            return qualifierValueArray.some(value => {
-              return associationValueArray.includes(value);
-            });
-          });
+              return qualifierValueArray.some(value => {
+                return associationValueArray.includes(value);
+              });
+            },
+          );
         });
       } else {
         return filters[field].has(rec.association[field]) ? true : false;
