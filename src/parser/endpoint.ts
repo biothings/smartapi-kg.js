@@ -55,8 +55,8 @@ export default class Endpoint {
     queryOperation.path = this.path;
     queryOperation.tags = this.apiMetadata.tags;
     queryOperation.transformer = {
-      wrap_jq: this.resolveRefIfProvided(op?.transformer?.wrap_jq),
-      pair_jq: this.resolveRefIfProvided(op?.transformer?.pair_jq)
+      wrap_jq: this.resolveRefIfProvided(op?.transformer?.jq?.wrap),
+      pair_jq: this.resolveRefIfProvided(op?.transformer?.jq?.pair)
     };
     return queryOperation;
   }
