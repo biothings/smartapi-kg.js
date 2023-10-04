@@ -5,6 +5,7 @@ export interface SmartAPIQueryResult {
 }
 
 export interface apiListItem {
+  primarySource?: boolean;
   id?: string;
   infores?: string;
   name: string;
@@ -59,7 +60,7 @@ interface PredicatesNode {
 }
 
 interface ReasonerSubjectAndPredicate {
-  [propName: string]: string[];
+  [propName: string]: (string | any)[];
 }
 
 export interface ReasonerPredicatesResponse {
