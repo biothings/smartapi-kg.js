@@ -11,29 +11,21 @@ export default abstract class BaseOperationsBuilder {
     this._options = options;
   }
 
-  protected loadOpsFromSpecs(
-    specs: SmartAPISpec[]
-  ): SmartAPIKGOperationObject[] {
+  protected loadOpsFromSpecs(specs: SmartAPISpec[]): SmartAPIKGOperationObject[] {
     let allOps: SmartAPIKGOperationObject[] = [];
-    specs.map((spec) => {
+    specs.map(spec => {
       try {
         const parser = new API(spec);
-        if (!parser.metadata.url) throw new Error("No suitable server present")
+        if (!parser.metadata.url) throw new Error("No suitable server present");
         const ops = parser.metadata.operations;
         allOps = [...allOps, ...ops];
       } catch (err) {
         // debug(JSON.stringify(spec.paths))
-        debug(
-          `[error]: Unable to parse spec, ${
-            spec ? spec.info.title : spec
-          }. Error message is ${err.toString()}`
-        );
+        debug(`[error]: Unable to parse spec, ${spec ? spec.info.title : spec}. Error message is ${err.toString()}`);
       }
     });
     return allOps;
   }
 
-  abstract build():
-    | SmartAPIKGOperationObject[]
-    | Promise<SmartAPIKGOperationObject[]>;
+  abstract build(): SmartAPIKGOperationObject[] | Promise<SmartAPIKGOperationObject[]>;
 }

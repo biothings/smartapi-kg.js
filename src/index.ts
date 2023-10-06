@@ -7,6 +7,9 @@ import path from "path";
 import Debug from "debug";
 const debug = Debug("bte:smartapi-kg:MetaKG");
 
+export * from "./types";
+export * from "./parser/types";
+
 export default class MetaKG {
   private _ops: SmartAPIKGOperationObject[];
   private _file_path: string;
@@ -45,10 +48,7 @@ export default class MetaKG {
    * Construct API Meta Knowledge Graph based on SmartAPI Specifications.
    * @param {boolean} includeReasoner - specify whether to include reasonerStdAPI into meta-kg
    */
-  async constructMetaKG(
-    includeReasoner: boolean = false,
-    options: BuilderOptions = {}
-  ): Promise<SmartAPIKGOperationObject[]> {
+  async constructMetaKG(includeReasoner = false, options: BuilderOptions = {}): Promise<SmartAPIKGOperationObject[]> {
     this._ops = await asyncBuilderFactory(options, includeReasoner);
     return this.ops;
   }
@@ -57,16 +57,8 @@ export default class MetaKG {
    * Construct API Meta Knowledge Graph based on SmartAPI Specifications.
    * @param {string} tag - the SmartAPI tag to be filtered on
    */
-  constructMetaKGSync(
-    includeReasoner: boolean = false,
-    options: BuilderOptions = {}
-  ): SmartAPIKGOperationObject[] {
-    this._ops = syncBuilderFactory(
-      options,
-      includeReasoner,
-      this._file_path,
-      this._predicates_path
-    );
+  constructMetaKGSync(includeReasoner = false, options: BuilderOptions = {}): SmartAPIKGOperationObject[] {
+    this._ops = syncBuilderFactory(options, includeReasoner, this._file_path, this._predicates_path);
     return this.ops;
   }
 

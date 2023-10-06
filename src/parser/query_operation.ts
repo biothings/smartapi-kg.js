@@ -1,12 +1,8 @@
-import {
-  XBTEKGSOperationObject,
-  QueryOperationInterface,
-  XBTEParametersObject,
-} from "./types";
+import { QueryOperationInterface, XBTEKGSOperationObject, XBTEParametersObject } from "./types";
 
 export default class QueryOperationObject implements QueryOperationInterface {
   private _params: XBTEParametersObject;
-  private _requestBody: object;
+  private _requestBody: any;
   private _requestBodyType: string;
   private _supportBatch: boolean;
   private _batchSize: number;
@@ -17,7 +13,7 @@ export default class QueryOperationObject implements QueryOperationInterface {
   private _server: string;
   private _tags: string[];
   private _pathParams: string[];
-  private _templateInputs: object;
+  private _templateInputs: any;
 
   set xBTEKGSOperation(newOp: XBTEKGSOperationObject) {
     this._params = newOp.parameters;
@@ -30,7 +26,7 @@ export default class QueryOperationObject implements QueryOperationInterface {
     this._batchSize = newOp.batchSize;
   }
 
-  get templateInputs(): object {
+  get templateInputs(): any {
     return this._templateInputs;
   }
 
@@ -38,7 +34,7 @@ export default class QueryOperationObject implements QueryOperationInterface {
     return this._params;
   }
 
-  get request_body(): object {
+  get request_body(): any {
     return this._requestBody;
   }
 

@@ -6,9 +6,10 @@ import { SmartAPIKGOperationObject } from "../parser/types";
 import { PredicatesMetadata } from "../types";
 import Debug from "debug";
 const debug = Debug("bte:smartapi-kg:SyncOperationsBuilderWithReasoner");
+import { SmartAPISpec } from "../parser/types";
 
 declare global {
-  var missingAPIs: any;
+  var missingAPIs: SmartAPISpec[];
 }
 
 export default class SyncOperationsBuilderWithReasoner extends BaseOperationsBuilder {
@@ -32,7 +33,7 @@ export default class SyncOperationsBuilderWithReasoner extends BaseOperationsBui
   }
 
   private parsePredicateEndpoint(metadata: PredicatesMetadata): SmartAPIKGOperationObject[] {
-    let ops = [] as SmartAPIKGOperationObject[];
+    const ops = [] as SmartAPIKGOperationObject[];
     if (!("predicates" in metadata)) {
       return ops;
     }
@@ -48,10 +49,18 @@ export default class SyncOperationsBuilderWithReasoner extends BaseOperationsBui
                 input_id: metadata?.nodes?.[sbj]?.id_prefixes,
                 output_type: this.removeBioLinkPrefix(obj),
                 output_id: metadata?.nodes?.[obj]?.id_prefixes,
-                predicate: this.removeBioLinkPrefix(typeof(pred) === "string" ? pred : pred.predicate),
+                predicate: this.removeBioLinkPrefix(typeof pred === "string" ? pred : pred.predicate),
                 api_name: metadata.association.api_name,
                 smartapi: metadata.association.smartapi,
-                qualifiers: (typeof(pred) === "string" || !pred.qualifiers) ? undefined : Object.fromEntries(pred.qualifiers.map((q: any) => [this.removeBioLinkPrefix(q.qualifier_type_id), q.applicable_values.map(this.removeBioLinkPrefix)])),
+                qualifiers:
+                  typeof pred === "string" || !pred.qualifiers
+                    ? undefined
+                    : Object.fromEntries(
+                      pred.qualifiers.map((q: any) => [
+                        this.removeBioLinkPrefix(q.qualifier_type_id),
+                        q.applicable_values.map(this.removeBioLinkPrefix),
+                      ]),
+                    ),
                 "x-translator": metadata.association["x-translator"],
                 "x-trapi": metadata.association["x-trapi"],
               },
@@ -73,12 +82,19 @@ export default class SyncOperationsBuilderWithReasoner extends BaseOperationsBui
       });
     });
     if (!(typeof this._options.apiList === "undefined")) {
-      return ops
-      .filter(op => {
-        const includeSmartAPI = this._options.apiList.include.find(api => api.id === op.association.smartapi.id && api.id !== undefined);
-        const includeInfoRes = this._options.apiList.include.find(api => api.infores === op.association?.["x-translator"]?.infores && api.infores !== undefined)
-        const excludeSmartAPI = this._options.apiList.exclude.find(api => api.id === op.association.smartapi.id && api.id !== undefined);
-        const excludeInfoRes = this._options.apiList.exclude.find(api => api.infores === op.association?.["x-translator"]?.infores && api.infores !== undefined)
+      return ops.filter(op => {
+        const includeSmartAPI = this._options.apiList.include.find(
+          api => api.id === op.association.smartapi.id && api.id !== undefined,
+        );
+        const includeInfoRes = this._options.apiList.include.find(
+          api => api.infores === op.association?.["x-translator"]?.infores && api.infores !== undefined,
+        );
+        const excludeSmartAPI = this._options.apiList.exclude.find(
+          api => api.id === op.association.smartapi.id && api.id !== undefined,
+        );
+        const excludeInfoRes = this._options.apiList.exclude.find(
+          api => api.infores === op.association?.["x-translator"]?.infores && api.infores !== undefined,
+        );
 
         let willBeIncluded;
         let apiValue;
@@ -100,20 +116,22 @@ export default class SyncOperationsBuilderWithReasoner extends BaseOperationsBui
         }
 
         if (apiValue && apiValue.name !== op.association.api_name) {
-          debug(`Expected to get '${apiValue.name}' with smartapi-id:${apiValue.id} but instead got '${op.association.api_name}'`);
+          debug(
+            `Expected to get '${apiValue.name}' with smartapi-id:${apiValue.id} but instead got '${op.association.api_name}'`,
+          );
         }
 
         return willBeIncluded;
-      })
-        // .filter(op => {
-        //   let api = this._options.apiList.exclude.find(api => api.id === op.association.smartapi.id);
-        //   if (api && api.name !== op.association.api_name) {
-        //     debug(
-        //       `Expected to get '${api.name}' with smartapi-id:${api.id} but instead got '${op.association.api_name}'`,
-        //     );
-        //   }
-        //   return !api;
-        // });
+      });
+      // .filter(op => {
+      //   let api = this._options.apiList.exclude.find(api => api.id === op.association.smartapi.id);
+      //   if (api && api.name !== op.association.api_name) {
+      //     debug(
+      //       `Expected to get '${api.name}' with smartapi-id:${api.id} but instead got '${op.association.api_name}'`,
+      //     );
+      //   }
+      //   return !api;
+      // });
     }
     return ops;
   }
@@ -158,7 +176,7 @@ export default class SyncOperationsBuilderWithReasoner extends BaseOperationsBui
     predicatesMetadata.map(metadata => {
       TRAPIOps = [...TRAPIOps, ...this.parsePredicateEndpoint(metadata)];
     });
-    const returnValue  = [...nonTRAPIOps, ...TRAPIOps];
+    const returnValue = [...nonTRAPIOps, ...TRAPIOps];
     return returnValue;
   }
 }

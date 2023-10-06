@@ -14,11 +14,7 @@ export default class Endpoint {
   apiMetadata: ParsedAPIMetadataObject;
   path: string;
 
-  constructor(
-    pathItemObject: SmartAPIPathItemObject,
-    apiMetadata: ParsedAPIMetadataObject,
-    path: string
-  ) {
+  constructor(pathItemObject: SmartAPIPathItemObject, apiMetadata: ParsedAPIMetadataObject, path: string) {
     this.pathItemObject = pathItemObject;
     this.apiMetadata = apiMetadata;
     this.path = path;
@@ -68,15 +64,13 @@ export default class Endpoint {
   }
 
   private resolveRefIfProvided(rec: SmartAPIReferenceObject) {
-    return "$ref" in rec
-      ? this.apiMetadata.components.fetchComponentByRef(rec.$ref)
-      : rec;
+    return "$ref" in rec ? this.apiMetadata.components.fetchComponentByRef(rec.$ref) : rec;
   }
 
   private constructAssociation(
     input: XBTEKGSOperationBioEntityObject,
     output: XBTEKGSOperationBioEntityObject,
-    op: XBTEKGSOperationObject
+    op: XBTEKGSOperationObject,
   ) {
     return {
       input_id: this.removeBioLinkPrefix(input.id),
@@ -140,9 +134,9 @@ export default class Endpoint {
     return res;
   }
 
-  constructEndpointInfo() {
+  constructEndpointInfo(): SmartAPIKGOperationObject[] {
     let res = [] as SmartAPIKGOperationObject[];
-    ["get", "post"].map((method) => {
+    ["get", "post"].map(method => {
       if (method in this.pathItemObject) {
         const pathParams = this.fetchPathParams(this.pathItemObject[method]);
         if (
@@ -151,16 +145,11 @@ export default class Endpoint {
         ) {
           let operation;
           let op;
-          for (const rec of this.pathItemObject[method][
-            "x-bte-kgs-operations"
-          ]) {
+          for (const rec of this.pathItemObject[method]["x-bte-kgs-operations"]) {
             operation = this.resolveRefIfProvided(rec);
             operation = Array.isArray(operation) ? operation : [operation];
             for (op of operation) {
-              res = [
-                ...res,
-                ...this.parseIndividualOperation({ op, method, pathParams }),
-              ];
+              res = [...res, ...this.parseIndividualOperation({ op, method, pathParams })];
             }
           }
         }

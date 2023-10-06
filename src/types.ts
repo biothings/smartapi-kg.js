@@ -1,4 +1,4 @@
-import { SmartAPISpec, SmartAPIRegistryRecordObject } from "./parser/types";
+import { XTRAPIObject, SmartAPISpec, SmartAPIRegistryRecordObject } from "./parser/types";
 
 export interface SmartAPIQueryResult {
   hits: SmartAPISpec[];
@@ -9,11 +9,6 @@ export interface apiListItem {
   id?: string;
   infores?: string;
   name: string;
-}
-
-export interface XTRAPIObject {
-  batch_size_limit?: number;
-  rate_limit?: number;
 }
 
 export interface apiListObject {
@@ -51,11 +46,11 @@ export interface PredicatesMetadata {
 }
 
 interface PredicatesNodes {
-  [propName: string]: PredicatesNode
+  [propName: string]: PredicatesNode;
 }
 
 interface PredicatesNode {
-  id_prefixes?: string[]
+  id_prefixes?: string[];
 }
 
 interface ReasonerSubjectAndPredicate {
@@ -66,6 +61,10 @@ export interface ReasonerPredicatesResponse {
   [propName: string]: ReasonerSubjectAndPredicate;
 }
 
+export interface CompactQualifiers {
+  [qualfier_type_id: string]: string | string[];
+}
+
 export interface FilterCriteria {
   input_type?: undefined | string | string[];
   output_type?: undefined | string | string[];
@@ -73,7 +72,8 @@ export interface FilterCriteria {
   api_name?: undefined | string | string[];
   source?: undefined | string | string[];
   component?: undefined | string | string[];
-  [propName: string]: undefined | string | string[];
+  qualifiers?: undefined | CompactQualifiers[];
+  [propName: string]: undefined | string | string[] | CompactQualifiers[];
 }
 
 export interface ObjectWithValueAsSet {
