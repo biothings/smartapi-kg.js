@@ -164,12 +164,16 @@ interface KGAssociationObject {
   "x-trapi"?: XTRAPIObject;
   qualifiers?: {
     [qualifierType: string]: string | string[];
-  }
+  };
 }
 
 export interface TransformerObject {
-  wrap_jq?: string;
-  pair_jq?: string;
+  wrap?: string;
+  pair?: string;
+}
+
+export interface TransformerSet {
+  [transformerPattern: string]: TransformerObject;
 }
 
 export interface QueryOperationInterface {
@@ -182,7 +186,7 @@ export interface QueryOperationInterface {
   request_body: object;
   supportBatch: boolean;
   inputSeparator: string;
-  transformer: TransformerObject;
+  transformer: TransformerSet;
 }
 
 export interface SmartAPIKGOperationObject {

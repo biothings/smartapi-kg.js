@@ -14,11 +14,7 @@ export default class Endpoint {
   apiMetadata: ParsedAPIMetadataObject;
   path: string;
 
-  constructor(
-    pathItemObject: SmartAPIPathItemObject,
-    apiMetadata: ParsedAPIMetadataObject,
-    path: string
-  ) {
+  constructor(pathItemObject: SmartAPIPathItemObject, apiMetadata: ParsedAPIMetadataObject, path: string) {
     this.pathItemObject = pathItemObject;
     this.apiMetadata = apiMetadata;
     this.path = path;
@@ -54,10 +50,7 @@ export default class Endpoint {
     queryOperation.server = server;
     queryOperation.path = this.path;
     queryOperation.tags = this.apiMetadata.tags;
-    queryOperation.transformer = {
-      wrap_jq: this.resolveRefIfProvided(op?.transformer?.jq?.wrap),
-      pair_jq: this.resolveRefIfProvided(op?.transformer?.jq?.pair)
-    };
+    queryOperation.transformer = this.resolveRefIfProvided(op?.transformer);
     return queryOperation;
   }
 
@@ -73,13 +66,13 @@ export default class Endpoint {
 
   private resolveRefIfProvided(rec?: SmartAPIReferenceObject) {
     if (typeof rec !== "object" || !rec.$ref) return rec;
-    return this.apiMetadata.components.fetchComponentByRef(rec.$ref)
+    return this.apiMetadata.components.fetchComponentByRef(rec.$ref);
   }
 
   private constructAssociation(
     input: XBTEKGSOperationBioEntityObject,
     output: XBTEKGSOperationBioEntityObject,
-    op: XBTEKGSOperationObject
+    op: XBTEKGSOperationObject,
   ) {
     return {
       input_id: this.removeBioLinkPrefix(input.id),
@@ -89,11 +82,11 @@ export default class Endpoint {
       predicate: this.removeBioLinkPrefix(op.predicate),
       qualifiers: op.qualifiers
         ? Object.fromEntries(
-            Object.entries(op.qualifiers).map(([qualifierType, qualifier]) => [
-              this.removeBioLinkPrefix(qualifierType),
-              qualifier,
-            ]),
-          )
+          Object.entries(op.qualifiers).map(([qualifierType, qualifier]) => [
+            this.removeBioLinkPrefix(qualifierType),
+            qualifier,
+          ]),
+        )
         : undefined,
       source: op.source,
       api_name: this.apiMetadata.title,
@@ -114,7 +107,7 @@ export default class Endpoint {
   private parseIndividualOperation({
     op,
     method,
-    pathParams
+    pathParams,
   }: {
     op: XBTEKGSOperationObject;
     method: string;
@@ -145,7 +138,7 @@ export default class Endpoint {
 
   constructEndpointInfo() {
     let res = [] as SmartAPIKGOperationObject[];
-    ["get", "post"].map((method) => {
+    ["get", "post"].map(method => {
       if (method in this.pathItemObject) {
         const pathParams = this.fetchPathParams(this.pathItemObject[method]);
         if (
@@ -154,16 +147,11 @@ export default class Endpoint {
         ) {
           let operation;
           let op;
-          for (const rec of this.pathItemObject[method][
-            "x-bte-kgs-operations"
-          ]) {
+          for (const rec of this.pathItemObject[method]["x-bte-kgs-operations"]) {
             operation = this.resolveRefIfProvided(rec);
             operation = Array.isArray(operation) ? operation : [operation];
             for (op of operation) {
-              res = [
-                ...res,
-                ...this.parseIndividualOperation({ op, method, pathParams }),
-              ];
+              res = [...res, ...this.parseIndividualOperation({ op, method, pathParams })];
             }
           }
         }
