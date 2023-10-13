@@ -33,6 +33,7 @@ interface PredicatesQueryOperationInterface {
   path: string;
   server: string;
   method: string;
+  transformer: string;
 }
 
 interface PredicatesAssociationInterface {

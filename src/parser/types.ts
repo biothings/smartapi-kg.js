@@ -123,6 +123,7 @@ export interface XBTEKGSOperationObject {
   responseMapping?: SmartAPIReferenceObject;
   templateInputs?: object;
   batchSize?: number;
+  transformer?: any;
 }
 
 export interface SmartAPISpec {
@@ -163,7 +164,16 @@ interface KGAssociationObject {
   "x-trapi"?: XTRAPIObject;
   qualifiers?: {
     [qualifierType: string]: string | string[];
-  }
+  };
+}
+
+export interface TransformerObject {
+  wrap?: string;
+  pair?: string;
+}
+
+export interface TransformerSet {
+  [transformerPattern: string]: TransformerObject;
 }
 
 export interface QueryOperationInterface {
@@ -176,6 +186,7 @@ export interface QueryOperationInterface {
   request_body: object;
   supportBatch: boolean;
   inputSeparator: string;
+  transformer: TransformerSet;
 }
 
 export interface SmartAPIKGOperationObject {
