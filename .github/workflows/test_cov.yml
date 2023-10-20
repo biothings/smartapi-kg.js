@@ -23,7 +23,7 @@ jobs:
 
     - name: pnpm install, generate coverage report
       run: |
-        pnpm ci
+        pnpm i
         pnpm run test-cov
 
     - name: Send coverage report to codecov for visualization
