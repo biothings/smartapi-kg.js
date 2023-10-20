@@ -18,15 +18,11 @@ export default abstract class BaseAsyncLoader extends BaseLoader {
     try {
       const res = await axios
         .get(this._url)
-        .then((res) => res.data)
-        .catch((error) => {
+        .then(res => res.data)
+        .catch(error => {
           if (error.response) {
-            debug(
-              `Query to ${this._url} failed with status code ${error.response.status}`
-            );
-            throw new FailToLoadSpecError(
-              `Query to ${this._url} failed with status code ${error.response.status}`
-            );
+            debug(`Query to ${this._url} failed with status code ${error.response.status}`);
+            throw new FailToLoadSpecError(`Query to ${this._url} failed with status code ${error.response.status}`);
           }
         });
       return res;
@@ -35,9 +31,7 @@ export default abstract class BaseAsyncLoader extends BaseLoader {
         throw e;
       }
       debug(`Query to ${this._url} failed with error ${e.toString()}`);
-      throw new FailToLoadSpecError(
-        `Query to ${this._url} failed with error ${e.toString()}`
-      );
+      throw new FailToLoadSpecError(`Query to ${this._url} failed with error ${e.toString()}`);
     }
   }
 

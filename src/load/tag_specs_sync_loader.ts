@@ -11,8 +11,6 @@ export default class TagSpecsSyncLoader extends AllSpecsSyncLoader {
   }
 
   parse(input: SmartAPIQueryResult): SmartAPISpec[] {
-    return input.hits.filter((item) =>
-      item.tags.map((t) => t.name).includes(this._tag)
-    );
+    return input.hits.filter(item => item.tags.map(t => t.name).includes(this._tag));
   }
 }

@@ -56,11 +56,11 @@ export default class SyncOperationsBuilderWithReasoner extends BaseOperationsBui
                   typeof pred === "string" || !pred.qualifiers
                     ? undefined
                     : Object.fromEntries(
-                      pred.qualifiers.map((q: any) => [
-                        this.removeBioLinkPrefix(q.qualifier_type_id),
-                        q.applicable_values.map(this.removeBioLinkPrefix),
-                      ]),
-                    ),
+                        pred.qualifiers.map((q: any) => [
+                          this.removeBioLinkPrefix(q.qualifier_type_id),
+                          q.applicable_values.map(this.removeBioLinkPrefix),
+                        ]),
+                      ),
                 "x-translator": metadata.association["x-translator"],
                 "x-trapi": metadata.association["x-trapi"],
               },

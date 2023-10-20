@@ -83,4 +83,4 @@ export function ft(ops: SmartAPIKGOperationObject[], criteria: FilterCriteria): 
     });
   });
   return res;
-};
+}

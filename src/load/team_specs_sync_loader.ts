@@ -11,12 +11,14 @@ export default class TeamSpecsSyncLoader extends APIListSpecsSyncLoader {
   }
 
   parse(input: SmartAPIQueryResult): SmartAPISpec[] {
-    return super.parse(input).filter(
-      (item) =>
-        "x-translator" in item.info &&
-        "team" in item.info["x-translator"] &&
-        Array.isArray(item.info["x-translator"].team) &&
-        item.info["x-translator"].team.includes(this._teamName)
-    );
+    return super
+      .parse(input)
+      .filter(
+        item =>
+          "x-translator" in item.info &&
+          "team" in item.info["x-translator"] &&
+          Array.isArray(item.info["x-translator"].team) &&
+          item.info["x-translator"].team.includes(this._teamName),
+      );
   }
 }
