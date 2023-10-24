@@ -16,44 +16,49 @@ export default class APIListSpecsSyncLoader extends AllSpecsSyncLoader {
     if (!this._apiList) {
       return input.hits;
     }
-    return input.hits
-      .filter(item => {
-        const includeSmartAPI = this._apiList?.include.find(api => api.id === item._id && api.id !== undefined);
-        const includeInfoRes = this._apiList?.include.find(api => api.infores === item.info["x-translator"]?.infores && api.infores !== undefined)
-        const excludeSmartAPI = this._apiList?.exclude.find(api => api.id === item._id && api.id !== undefined);
-        const excludeInfoRes = this._apiList?.exclude.find(api => api.infores === item.info["x-translator"]?.infores && api.infores !== undefined)
-        
-        let willBeIncluded;
-        let apiValue;
-        if (excludeSmartAPI) {
-          willBeIncluded = false;
-          apiValue = excludeSmartAPI;
-        } else if (includeSmartAPI) {
-          willBeIncluded = true;
-          apiValue = includeSmartAPI;
-        } else if (excludeInfoRes) {
-          willBeIncluded = false;
-          apiValue = excludeInfoRes;
-        } else if (includeInfoRes) {
-          apiValue = includeInfoRes;
-          willBeIncluded = true;
-        } else {
-          apiValue = undefined;
-          willBeIncluded = false;
-        }
+    return input.hits.filter(item => {
+      const includeSmartAPI = this._apiList?.include.find(api => api.id === item._id && api.id !== undefined);
+      const includeInfoRes = this._apiList?.include.find(
+        api => api.infores === item.info["x-translator"]?.infores && api.infores !== undefined,
+      );
+      const excludeSmartAPI = this._apiList?.exclude.find(api => api.id === item._id && api.id !== undefined);
+      const excludeInfoRes = this._apiList?.exclude.find(
+        api => api.infores === item.info["x-translator"]?.infores && api.infores !== undefined,
+      );
 
-        if (apiValue && apiValue.name !== item.info.title) {
-          debug(`Expected to get '${apiValue.name}' with smartapi-id:${apiValue.id} but instead got '${item.info.title}'`);
-        }
+      let willBeIncluded;
+      let apiValue;
+      if (excludeSmartAPI) {
+        willBeIncluded = false;
+        apiValue = excludeSmartAPI;
+      } else if (includeSmartAPI) {
+        willBeIncluded = true;
+        apiValue = includeSmartAPI;
+      } else if (excludeInfoRes) {
+        willBeIncluded = false;
+        apiValue = excludeInfoRes;
+      } else if (includeInfoRes) {
+        apiValue = includeInfoRes;
+        willBeIncluded = true;
+      } else {
+        apiValue = undefined;
+        willBeIncluded = false;
+      }
 
-        return willBeIncluded;
-      })
-      // .filter(item => {
-      //   let api = this._apiList.exclude.find(api => api.id === item._id);
-      //   if (api && api.name !== item.info.title) {
-      //     debug(`Expected to get '${api.name}' with smartapi-id:${api.id} but instead got '${item.info.title}'`);
-      //   }
-      //   return !api;
-      // });
+      if (apiValue && apiValue.name !== item.info.title) {
+        debug(
+          `Expected to get '${apiValue.name}' with smartapi-id:${apiValue.id} but instead got '${item.info.title}'`,
+        );
+      }
+
+      return willBeIncluded;
+    });
+    // .filter(item => {
+    //   let api = this._apiList.exclude.find(api => api.id === item._id);
+    //   if (api && api.name !== item.info.title) {
+    //     debug(`Expected to get '${api.name}' with smartapi-id:${api.id} but instead got '${item.info.title}'`);
+    //   }
+    //   return !api;
+    // });
   }
 }

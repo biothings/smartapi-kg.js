@@ -5,9 +5,7 @@ import { SmartAPISpec } from "../parser/types";
 
 export default class ComponentSpecsAsyncLoader extends BaseAsyncLoader {
   constructor(component: string) {
-    super(
-      COMPONENT_SMARTAPI_QUERY_TEMPLATE.replace("{component_name}", component)
-    );
+    super(COMPONENT_SMARTAPI_QUERY_TEMPLATE.replace("{component_name}", component));
   }
 
   protected async fetch(): Promise<SmartAPIQueryResult> {

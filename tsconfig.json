@@ -1,25 +1,25 @@
 {
-    "compilerOptions": {
-	"incremental": true,
-        "outDir": "./built",
-        "allowJs": true,
-        "target": "es2020",
-        "module": "commonjs",
-        "rootDir": "./src",
-	"composite": true,
-        "declaration": true,
-        "esModuleInterop": true,
-        "resolveJsonModule": true,
-        "strict": false,
-        "noImplicitAny": true
-    },
-    "include": [
-        "./src/**/*",
-        "./src/data/smartapi_specs.json",
-        "./src/data/predicates.json",
-    ],
-    "exclude": [
-        "node_modules",
-        "__tests__/"
-    ],
+  "compilerOptions": {
+    "incremental": true,
+    "outDir": "./built",
+    "allowJs": true,
+    "target": "es2020",
+    "module": "commonjs",
+    "rootDir": "./src",
+    "composite": true,
+    "declaration": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "strict": false,
+    "noImplicitAny": false
+  },
+  "include": [
+    "./src/**/*",
+    "./src/data/smartapi_specs.json",
+    "./src/data/predicates.json"
+  ],
+  "exclude": [
+    "node_modules",
+    "__tests__/"
+  ]
 }

@@ -1,6 +1,6 @@
 import { FILTER_FIELDS } from "./config";
 import _ from "lodash";
-import { FilterCriteria, ObjectWithValueAsSet } from "./types";
+import { FilterCriteria, ObjectWithValueAsSet, CompactQualifiers } from "./types";
 import { SmartAPIKGOperationObject } from "./parser/types";
 // import Debug from "debug";
 // const debug = Debug("bte:smartapi-kg:Filter");
@@ -8,7 +8,7 @@ import { SmartAPIKGOperationObject } from "./parser/types";
 const getUniqueValsForEachField = (operations: SmartAPIKGOperationObject[]): ObjectWithValueAsSet => {
   const allValues = {} as ObjectWithValueAsSet;
   FILTER_FIELDS.forEach(field => (allValues[field] = new Set()));
-  const qualifiers: { [key: string]: {} } = {};
+  const qualifiers: { [key: string]: any } = {};
   operations.map(operation => {
     FILTER_FIELDS.map(field => {
       if (field === "component") {
@@ -36,7 +36,7 @@ const getUniqueValsForEachField = (operations: SmartAPIKGOperationObject[]): Obj
  * @param {Array} ops - an array of objects, each represents an association
  * @param {Object} criteria - the filter criteria
  */
-export const ft = (ops: SmartAPIKGOperationObject[], criteria: FilterCriteria) => {
+export function ft(ops: SmartAPIKGOperationObject[], criteria: FilterCriteria): SmartAPIKGOperationObject[] {
   const allValues = getUniqueValsForEachField(ops);
   const filters = {} as ObjectWithValueAsSet;
 
@@ -44,7 +44,9 @@ export const ft = (ops: SmartAPIKGOperationObject[], criteria: FilterCriteria) =
     if (!(field in criteria) || criteria[field] === undefined) {
       filters[field] = allValues[field];
     } else {
-      const vals = Array.isArray(criteria[field]) ? criteria[field] : [criteria[field]];
+      const vals = Array.isArray(criteria[field])
+        ? (criteria[field] as (string | CompactQualifiers[])[])
+        : [criteria[field]];
       filters[field] = new Set(vals);
     }
   });
@@ -81,4 +83,4 @@ export const ft = (ops: SmartAPIKGOperationObject[], criteria: FilterCriteria) =
     });
   });
   return res;
-};
+}

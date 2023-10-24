@@ -18,7 +18,11 @@ export default class SingleSpecSyncLoader extends AllSpecsSyncLoader {
     return input.hits
       .filter(item => {
         if (this._apiList) {
-          let api = this._apiList.exclude.find(api => api.id === item._id) || this._apiList.exclude.find(api => api.infores === item.info["x-translator"]?.infores && api.infores !== undefined);
+          let api =
+            this._apiList.exclude.find(api => api.id === item._id) ||
+            this._apiList.exclude.find(
+              api => api.infores === item.info["x-translator"]?.infores && api.infores !== undefined,
+            );
           if (api && api.name !== item.info.title) {
             debug(`Expected to get '${api.name}' with smartapi-id:${api.id} but instead got '${item.info.title}'`);
           }

@@ -163,7 +163,7 @@ interface KGAssociationObject {
   "x-trapi"?: XTRAPIObject;
   qualifiers?: {
     [qualifierType: string]: string | string[];
-  }
+  };
 }
 
 export interface QueryOperationInterface {
@@ -173,9 +173,13 @@ export interface QueryOperationInterface {
   tags: string[];
   path_params: string[];
   params: XBTEParametersObject;
-  request_body: object;
+  request_body: any;
+  requestBodyType?: string;
   supportBatch: boolean;
+  batchSize?: number;
   inputSeparator: string;
+  useTemplating?: boolean;
+  templateInputs?: any;
 }
 
 export interface SmartAPIKGOperationObject {

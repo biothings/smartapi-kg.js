@@ -13,7 +13,7 @@ export default class ASyncOperationsBuilder extends BaseOperationsBuilder {
       this._options.smartAPIID,
       this._options.teamName,
       this._options.tag,
-      this._options.component
+      this._options.component,
     );
     return specs;
   }

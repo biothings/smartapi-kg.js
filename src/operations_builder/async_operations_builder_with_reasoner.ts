@@ -1,9 +1,5 @@
 import AsyncOperationsBuilder from "./async_operations_builder";
-import {
-  SmartAPISpec,
-  ParsedAPIMetadataObject,
-  SmartAPIKGOperationObject,
-} from "../parser/types";
+import { SmartAPISpec, ParsedAPIMetadataObject, SmartAPIKGOperationObject } from "../parser/types";
 import { ReasonerPredicatesResponse } from "../types";
 import API from "../parser/index";
 import axios from "axios";
@@ -11,11 +7,9 @@ import Debug from "debug";
 const debug = Debug("bte:smartapi-kg:OperationsBuilder");
 
 export default class AsyncOperationsBuilderWithReasoner extends AsyncOperationsBuilder {
-  private getTRAPIWithPredicatesEndpoint(
-    specs: SmartAPISpec[]
-  ): ParsedAPIMetadataObject[] {
+  private getTRAPIWithPredicatesEndpoint(specs: SmartAPISpec[]): ParsedAPIMetadataObject[] {
     const trapi = [] as ParsedAPIMetadataObject[];
-    specs.map((spec) => {
+    specs.map(spec => {
       try {
         const parser = new API(spec);
         const metadata = parser.metadata;
@@ -27,11 +21,7 @@ export default class AsyncOperationsBuilderWithReasoner extends AsyncOperationsB
           trapi.push(metadata);
         }
       } catch (err) {
-        debug(
-          `[error]: Unable to parse spec, ${
-            spec ? spec.info.title : spec
-          }. Error message is ${err.toString()}`
-        );
+        debug(`[error]: Unable to parse spec, ${spec ? spec.info.title : spec}. Error message is ${err.toString()}`);
       }
     });
     return trapi;
@@ -56,21 +46,29 @@ export default class AsyncOperationsBuilderWithReasoner extends AsyncOperationsB
 
   private parsePredicateEndpoint(
     response: ReasonerPredicatesResponse,
-    metadata: ParsedAPIMetadataObject
+    metadata: ParsedAPIMetadataObject,
   ): SmartAPIKGOperationObject[] {
     const ops = [] as SmartAPIKGOperationObject[];
-    Object.keys(response).map((sbj) => {
-      Object.keys(response[sbj]).map((obj) => {
+    Object.keys(response).map(sbj => {
+      Object.keys(response[sbj]).map(obj => {
         if (Array.isArray(response[sbj][obj])) {
-          response[sbj][obj].map((pred) => {
+          response[sbj][obj].map(pred => {
             ops.push({
               association: {
                 input_type: this.removeBioLinkPrefix(sbj),
                 output_type: this.removeBioLinkPrefix(obj),
-                predicate: this.removeBioLinkPrefix(typeof(pred) === "string" ? pred : pred.predicate),
+                predicate: this.removeBioLinkPrefix(typeof pred === "string" ? pred : pred.predicate),
                 api_name: metadata.title,
                 smartapi: metadata.smartapi,
-                qualifiers: (typeof(pred) === "string" || !pred.qualifiers) ? undefined : Object.fromEntries(pred.qualifiers.map((q: any) => [this.removeBioLinkPrefix(q.qualifier_type_id), q.applicable_values.map(this.removeBioLinkPrefix)])),
+                qualifiers:
+                  typeof pred === "string" || !pred.qualifiers
+                    ? undefined
+                    : Object.fromEntries(
+                        pred.qualifiers.map((q: any) => [
+                          this.removeBioLinkPrefix(q.qualifier_type_id),
+                          q.applicable_values.map(this.removeBioLinkPrefix),
+                        ]),
+                      ),
                 "x-translator": metadata["x-translator"],
               },
               tags: [...metadata.tags, ...["bte-trapi"]],
@@ -93,40 +91,30 @@ export default class AsyncOperationsBuilderWithReasoner extends AsyncOperationsB
     return ops;
   }
 
-  private async getOpsFromPredicatesEndpoint(
-    metadata: ParsedAPIMetadataObject
-  ): Promise<SmartAPIKGOperationObject[]> {
+  private async getOpsFromPredicatesEndpoint(metadata: ParsedAPIMetadataObject): Promise<SmartAPIKGOperationObject[]> {
     return axios
       .get(this.constructQueryUrl(metadata.url), { timeout: 5000 })
-      .then((res) => {
+      .then(res => {
         if (res.status === 200) {
           const data = res.data as ReasonerPredicatesResponse;
           return this.parsePredicateEndpoint(data, metadata);
         }
         debug(
-          `[error]: Unable to get /predicates for ${metadata.url} due to query failure with status code ${res.status}`
+          `[error]: Unable to get /predicates for ${metadata.url} due to query failure with status code ${res.status}`,
         );
         return [];
       })
-      .catch((err) => {
-        debug(
-          `[error]: Unable to get /predicates for ${
-            metadata.url
-          } due to error ${err.toString()}`
-        );
+      .catch(err => {
+        debug(`[error]: Unable to get /predicates for ${metadata.url} due to error ${err.toString()}`);
         return [];
       });
   }
 
-  private async getOpsFromPredicatesEndpoints(
-    specs: SmartAPISpec[]
-  ): Promise<SmartAPIKGOperationObject[]> {
+  private async getOpsFromPredicatesEndpoints(specs: SmartAPISpec[]): Promise<SmartAPIKGOperationObject[]> {
     const metadatas = this.getTRAPIWithPredicatesEndpoint(specs);
     let res = [] as SmartAPIKGOperationObject[];
-    await Promise.allSettled(
-      metadatas.map((metadata) => this.getOpsFromPredicatesEndpoint(metadata))
-    ).then((results) => {
-      results.map((rec) => {
+    await Promise.allSettled(metadatas.map(metadata => this.getOpsFromPredicatesEndpoint(metadata))).then(results => {
+      results.map(rec => {
         if (rec.status === "fulfilled") {
           const ops = rec.value as SmartAPIKGOperationObject[];
           res = [...res, ...rec.value];

@@ -15,12 +15,13 @@ export const syncLoaderFactory = (
   tag: string = undefined,
   component: string = undefined,
   apiList: apiListObject = undefined,
-  path: string
+  path: string,
 ): SmartAPISpec[] => {
   let loader;
   if (!(typeof smartAPIID === "undefined")) {
     loader = new SingleSpecSyncLoader(smartAPIID, path, apiList);
-    debug("Using single spec sync loader now."); } else if (!(typeof teamName === "undefined")) {
+    debug("Using single spec sync loader now.");
+  } else if (!(typeof teamName === "undefined")) {
     loader = new TeamSpecsSyncLoader(teamName, path, apiList);
     debug("Using team spec sync loader now.");
   } else if (!(typeof tag === "undefined")) {

@@ -5,7 +5,7 @@ import { SmartAPIKGOperationObject, SmartAPISpec } from "../parser/types";
 
 export const asyncBuilderFactory = async (
   options: BuilderOptions,
-  includeReasoner: boolean
+  includeReasoner: boolean,
 ): Promise<SmartAPIKGOperationObject[]> => {
   let builder;
   if (includeReasoner === true) {

@@ -9,7 +9,7 @@ export const asyncLoaderFactory = async (
   smartAPIID: string = undefined,
   teamName: string = undefined,
   tag: string = undefined,
-  component: string = undefined
+  component: string = undefined,
 ): Promise<SmartAPISpec[]> => {
   let loader;
   if (!(typeof smartAPIID === "undefined")) {

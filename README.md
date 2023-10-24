@@ -14,7 +14,7 @@
 ## Install
 
 ```sh
-npm i @biothings-explorer/smartapi-kg
+pnpm i @biothings-explorer/smartapi-kg
 ```
 
 ## Usage
@@ -118,7 +118,7 @@ npm i @biothings-explorer/smartapi-kg
 ## Run tests
 
 ```sh
-npm run test
+pnpm run test
 ```
 
 ## Author

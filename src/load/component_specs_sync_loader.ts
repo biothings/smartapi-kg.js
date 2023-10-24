@@ -12,9 +12,7 @@ export default class ComponentSpecsSyncLoader extends AllSpecsSyncLoader {
 
   parse(input: SmartAPIQueryResult): SmartAPISpec[] {
     return input.hits.filter(
-      (item) =>
-        "x-translator" in item.info &&
-        item.info["x-translator"].component === this._component
+      item => "x-translator" in item.info && item.info["x-translator"].component === this._component,
     );
   }
 }

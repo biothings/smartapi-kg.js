@@ -3,12 +3,12 @@ import SyncOperationsBuilderWithReasoner from "./sync_operations_builder_with_re
 import { BuilderOptions } from "../types";
 import { SmartAPIKGOperationObject, SmartAPISpec } from "../parser/types";
 
-export const syncBuilderFactory = (
+export function syncBuilderFactory(
   options: BuilderOptions,
   includeReasoner: boolean,
   smartapi_path: string,
   predicates_path: string,
-): SmartAPIKGOperationObject[] => {
+): SmartAPIKGOperationObject[] {
   let builder;
   if (includeReasoner === true) {
     builder = new SyncOperationsBuilderWithReasoner(options, smartapi_path, predicates_path);
@@ -37,4 +37,4 @@ export const syncBuilderFactory = (
     op.association.apiIsPrimaryKnowledgeSource = apiIsPrimaryKnowledgeSource ? true : false;
   });
   return ops;
-};
+}
