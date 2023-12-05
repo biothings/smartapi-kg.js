@@ -4,8 +4,9 @@ import {
   SmartAPIKGOperationObject,
   SmartAPIOperationObject,
   XBTEKGSOperationObject,
-  XBTEKGSOperationBioEntityObject,
   SmartAPIReferenceObject,
+  XBTEKGSInputNamespace,
+  XBTEKGSOutputNamespace,
 } from "./types";
 import QueryOperationObject from "./query_operation";
 
@@ -37,13 +38,20 @@ export default class Endpoint {
     op,
     method,
     pathParams,
+    inputType,
+    outputType
   }: {
     op: XBTEKGSOperationObject;
     method: string;
     pathParams: string[];
+    inputType: string;
+    outputType: string;
   }) {
     const server = this.apiMetadata.url;
     const queryOperation = new QueryOperationObject();
+    queryOperation.refResolver = this.resolveRefIfProvided.bind(this);
+    queryOperation.inputType = inputType;
+    queryOperation.outputType = outputType;
     queryOperation.xBTEKGSOperation = op;
     queryOperation.method = method;
     queryOperation.path_params = pathParams;
@@ -68,15 +76,18 @@ export default class Endpoint {
   }
 
   private constructAssociation(
-    input: XBTEKGSOperationBioEntityObject,
-    output: XBTEKGSOperationBioEntityObject,
-    op: XBTEKGSOperationObject,
+    input: XBTEKGSInputNamespace,
+    output: XBTEKGSOutputNamespace,
+    op: XBTEKGSOperationObject
   ) {
     return {
-      input_id: this.removeBioLinkPrefix(input.id),
-      input_type: this.removeBioLinkPrefix(input.semantic),
-      output_id: this.removeBioLinkPrefix(output.id),
-      output_type: this.removeBioLinkPrefix(output.semantic),
+      input_id: this.removeBioLinkPrefix(input.prefix),
+      input_type: this.removeBioLinkPrefix(op.inputs.semanticType),
+      input_name_field: input.name_field,
+      output_id: this.removeBioLinkPrefix(output.prefix),
+      output_type: this.removeBioLinkPrefix(op.outputs.semanticType),
+      output_id_field: output.id_field,
+      output_name_field: output.name_field,
       predicate: this.removeBioLinkPrefix(op.predicate),
       qualifiers: op.qualifiers
         ? Object.fromEntries(
@@ -93,12 +104,15 @@ export default class Endpoint {
     };
   }
 
-  private constructResponseMapping(op: XBTEKGSOperationObject) {
+  private constructResponseMapping(op: XBTEKGSOperationObject, output: string, output_name: string, input_name: string) {
     if ("responseMapping" in op) {
       op.response_mapping = op.responseMapping;
     }
+    if (!op.response_mapping) {
+        op.response_mapping = {}
+    }
     return {
-      [op.predicate]: this.resolveRefIfProvided(op.response_mapping),
+      [op.predicate]: { ...this.resolveRefIfProvided(op.response_mapping), output, ...(output_name && { output_name }), ...(input_name && { input_name }) },
     };
   }
 
@@ -112,16 +126,18 @@ export default class Endpoint {
     pathParams: string[];
   }) {
     const res = [];
-    const queryOperation = this.constructQueryOperation({
-      op,
-      method,
-      pathParams,
-    });
-    const responseMapping = this.constructResponseMapping(op);
-    for (const input of op.inputs) {
-      for (const output of op.outputs) {
+    for (const input of op.inputs.namespaces) {
+      for (const output of op.outputs.namespaces) {
         let updateInfo = {} as SmartAPIKGOperationObject;
+        const responseMapping = this.constructResponseMapping(op, output.id_field, input.name_field, output.name_field);
         const association = this.constructAssociation(input, output, op);
+        const queryOperation = this.constructQueryOperation({
+            op,
+            method,
+            pathParams,
+            inputType: input.prefix,
+            outputType: output.prefix
+        });
         updateInfo = {
           query_operation: queryOperation,
           association,

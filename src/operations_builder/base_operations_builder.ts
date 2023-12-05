@@ -21,7 +21,7 @@ export default abstract class BaseOperationsBuilder {
         allOps = [...allOps, ...ops];
       } catch (err) {
         // debug(JSON.stringify(spec.paths))
-        debug(`[error]: Unable to parse spec, ${spec ? spec.info.title : spec}. Error message is ${err.toString()}`);
+        debug(`[error]: Unable to parse spec, ${spec ? spec.info.title : spec}. Error message is ${err.toString()} ${err.stack}`);
       }
     });
     return allOps;

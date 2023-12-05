@@ -22,6 +22,7 @@ interface SmartAPIServerObject {
 
 export interface SmartAPIReferenceObject {
   $ref?: string;
+  [propName: string]: any;
 }
 
 export interface SmartAPIParameterObject {
@@ -102,21 +103,52 @@ export interface SmartAPIComponentObject {
   [propName: string]: any;
 }
 
-export interface XBTEKGSOperationBioEntityObject {
-  id: string;
-  semantic: string;
+export interface XBTEKGSOperationInputObject {
+  namespaces: XBTEKGSInputNamespace[];
+  semanticType: string;
+}
+
+export interface XBTEKGSInputNamespace {
+  prefix: string;
+  name_field: string;
+}
+
+export interface XBTEKGSOperationOutputObject {
+  namespaces: XBTEKGSOutputNamespace[];
+  semanticType: string;
+}
+
+export interface XBTEKGSOutputNamespace {
+  prefix: string;
+  name_field: string;
+  id_field: string;
+}
+
+interface BaseRequestInfo {
+  requestBody?: any;
+  requestBodyType?: string;
+  parameters?: XBTEParametersObject;
+}
+
+interface XBTEKGSRequestInfoObject extends BaseRequestInfo {
+  differsByInputNamespace?: boolean;
+  differsByOutputNamespace?: boolean;
+  byOutputNamespace?: {
+    [namespace: string]: BaseRequestInfo
+  }
+  byInputNamespace?: {
+    [namespace: string]: BaseRequestInfo
+  }
 }
 
 export interface XBTEKGSOperationObject {
-  inputs: XBTEKGSOperationBioEntityObject[];
-  outputs: XBTEKGSOperationBioEntityObject[];
+  inputs: XBTEKGSOperationInputObject;
+  outputs: XBTEKGSOperationOutputObject;
   predicate: string;
   qualifiers?: { [qualifierType: string]: string };
   source?: string;
-  parameters?: XBTEParametersObject;
-  requestBody?: any;
-  requestBodyType?: string;
   supportBatch?: boolean;
+  requestInfo: XBTEKGSRequestInfoObject;
   useTemplating?: boolean;
   inputSeparator?: string;
   response_mapping?: SmartAPIReferenceObject;
@@ -151,7 +183,10 @@ export interface XTRAPIObject {
 interface KGAssociationObject {
   input_id?: string | string[];
   input_type: string;
+  input_name_field?: string;
   output_id?: string | string[];
+  output_id_field?: string;
+  output_name_field?: string;
   output_type: string;
   predicate: string;
   source?: string;

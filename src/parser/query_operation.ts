@@ -14,11 +14,43 @@ export default class QueryOperationObject implements QueryOperationInterface {
   private _tags: string[];
   private _pathParams: string[];
   private _templateInputs: any;
+  private _inputType: string;
+  private _outputType: string;
+  private _refResolver: (input: any) => any;
+
+  set inputType(inputType: string) {
+    this._inputType = inputType;
+  }
+
+  set outputType(outputType: string) {
+    this._outputType = outputType;
+  }
+
+  set refResolver(refResolver: (input: any) => any) {
+    this._refResolver = refResolver;
+  }
 
   set xBTEKGSOperation(newOp: XBTEKGSOperationObject) {
-    this._params = newOp.parameters;
-    this._requestBody = newOp.requestBody;
-    this._requestBodyType = newOp.requestBodyType;
+    if (newOp.requestInfo.differsByInputNamespace && this._inputType in newOp.requestInfo.byInputNamespace) {
+        this._params = newOp.requestInfo.byInputNamespace[this._inputType].parameters;
+        this._requestBody = newOp.requestInfo.byInputNamespace[this._inputType].requestBody;
+        this._requestBodyType = newOp.requestInfo.byInputNamespace[this._inputType].requestBodyType;
+    } else if (newOp.requestInfo.differsByOutputNamespace && this._outputType in newOp.requestInfo.byOutputNamespace) {
+        this._params = newOp.requestInfo.byOutputNamespace[this._outputType].parameters;
+        this._requestBody = newOp.requestInfo.byOutputNamespace[this._outputType].requestBody;
+        this._requestBodyType = newOp.requestInfo.byOutputNamespace[this._outputType].requestBodyType;
+    } else {
+        this._params = newOp.requestInfo.parameters;
+        this._requestBody = newOp.requestInfo.requestBody;
+        this._requestBodyType = newOp.requestInfo.requestBodyType;
+    }
+
+    // resolve refs
+    if (this._refResolver) {
+        this._params = this._refResolver(this._params);
+        this._requestBody = this._refResolver(this._requestBody);
+    }
+
     this._supportBatch = newOp.supportBatch;
     this._useTemplating = newOp.useTemplating;
     this._inputSeparator = newOp.inputSeparator;
