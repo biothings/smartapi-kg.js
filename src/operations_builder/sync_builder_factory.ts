@@ -3,19 +3,19 @@ import SyncOperationsBuilderWithReasoner from "./sync_operations_builder_with_re
 import { BuilderOptions } from "../types";
 import { SmartAPIKGOperationObject, SmartAPISpec } from "../parser/types";
 
-export function syncBuilderFactory(
+export async function syncBuilderFactory(
   options: BuilderOptions,
   includeReasoner: boolean,
   smartapi_path: string,
   predicates_path: string,
-): SmartAPIKGOperationObject[] {
+): Promise<SmartAPIKGOperationObject[]> {
   let builder;
   if (includeReasoner === true) {
     builder = new SyncOperationsBuilderWithReasoner(options, smartapi_path, predicates_path);
   } else {
     builder = new SyncOperationsBuilder(options, smartapi_path);
   }
-  const ops = builder.build();
+  const ops = await builder.build();
 
   const primaryKnowledgeAPIs = new Set();
   options.apiList?.include.forEach(api => {

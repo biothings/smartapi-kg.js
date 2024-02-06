@@ -9,14 +9,14 @@ import { apiListObject } from "../types";
 import Debug from "debug";
 const debug = Debug("bte:smartapi-kg:SyncLoader");
 
-export const syncLoaderFactory = (
+export const syncLoaderFactory = async (
   smartAPIID: string = undefined,
   teamName: string = undefined,
   tag: string = undefined,
   component: string = undefined,
   apiList: apiListObject = undefined,
   path: string,
-): SmartAPISpec[] => {
+): Promise<SmartAPISpec[]> => {
   let loader;
   if (!(typeof smartAPIID === "undefined")) {
     loader = new SingleSpecSyncLoader(smartAPIID, path, apiList);
@@ -37,5 +37,5 @@ export const syncLoaderFactory = (
     loader = new AllSpecsSyncLoader(path);
     debug("Using all specs sync loader now.");
   }
-  return loader.load();
+  return await loader.load();
 };

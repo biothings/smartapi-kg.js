@@ -6,6 +6,7 @@ import { SmartAPIKGOperationObject } from "../parser/types";
 import { PredicatesMetadata } from "../types";
 import Debug from "debug";
 const debug = Debug("bte:smartapi-kg:SyncOperationsBuilderWithReasoner");
+const { redisClient } = require("@biothings-explorer/utils");
 import { SmartAPISpec } from "../parser/types";
 
 declare global {
@@ -136,14 +137,26 @@ export default class SyncOperationsBuilderWithReasoner extends BaseOperationsBui
     return ops;
   }
 
-  private fetch(): PredicatesMetadata[] {
-    const file = fs.readFileSync(this._predicates_file_path, "utf-8");
-    const data = JSON.parse(file) as PredicatesMetadata[];
+  private async fetch(): Promise<PredicatesMetadata[]> {
+    let data: PredicatesMetadata[];
+
+    if (redisClient.clientEnabled) {
+        const redisData = await redisClient.client.getTimeout(`bte:smartapi:smartapi`);
+        if (redisData) {
+            data = (JSON.parse(redisData))?.predicates as PredicatesMetadata[];
+        }
+    }
+    
+    if (!data) {
+        const file = fs.readFileSync(this._predicates_file_path, "utf-8");
+        data = JSON.parse(file) as PredicatesMetadata[];
+    }
+
     return data;
   }
 
-  build() {
-    const specs = syncLoaderFactory(
+  async build() {
+    const specs = await syncLoaderFactory(
       this._options.smartAPIID,
       this._options.teamName,
       this._options.tag,
@@ -152,15 +165,15 @@ export default class SyncOperationsBuilderWithReasoner extends BaseOperationsBui
       this._file_path,
     );
     const nonTRAPIOps = this.loadOpsFromSpecs(specs);
-    const predicatesMetadata = this.fetch();
-    global.missingAPIs = syncLoaderFactory(
+    const predicatesMetadata = await this.fetch();
+    global.missingAPIs = (await syncLoaderFactory(
       undefined,
       undefined,
       undefined,
       undefined,
       undefined,
       this._file_path,
-    ).filter(
+    )).filter(
       spec =>
         "info" in spec &&
         "x-translator" in spec.info &&

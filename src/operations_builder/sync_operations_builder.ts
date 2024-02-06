@@ -10,8 +10,8 @@ export default class SyncOperationsBuilder extends BaseOperationsBuilder {
     this._file_path = path;
   }
 
-  build() {
-    const specs = syncLoaderFactory(
+  async build() {
+    const specs = await syncLoaderFactory(
       this._options.smartAPIID,
       this._options.teamName,
       this._options.tag,
