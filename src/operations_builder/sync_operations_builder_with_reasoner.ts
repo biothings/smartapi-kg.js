@@ -137,6 +137,10 @@ export default class SyncOperationsBuilderWithReasoner extends BaseOperationsBui
   }
 
   private fetch(): PredicatesMetadata[] {
+    if (this._options.predicates) {
+        return this._options.predicates;
+    }
+
     const file = fs.readFileSync(this._predicates_file_path, "utf-8");
     const data = JSON.parse(file) as PredicatesMetadata[];
     return data;
@@ -150,6 +154,7 @@ export default class SyncOperationsBuilderWithReasoner extends BaseOperationsBui
       this._options.component,
       this._options.apiList,
       this._file_path,
+      this._options.smartapiSpecs
     );
     const nonTRAPIOps = this.loadOpsFromSpecs(specs);
     const predicatesMetadata = this.fetch();
@@ -160,6 +165,7 @@ export default class SyncOperationsBuilderWithReasoner extends BaseOperationsBui
       undefined,
       undefined,
       this._file_path,
+      this._options.smartapiSpecs
     ).filter(
       spec =>
         "info" in spec &&

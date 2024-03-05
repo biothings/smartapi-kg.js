@@ -5,8 +5,8 @@ import APIListSpecsSyncLoader from "./api_list_specs_sync_loader";
 export default class TeamSpecsSyncLoader extends APIListSpecsSyncLoader {
   private _teamName: string;
 
-  constructor(teamName: string, path: string, apiList?: apiListObject) {
-    super(path, apiList);
+  constructor(teamName: string, path: string, apiList?: apiListObject, smartapiSpecs?: SmartAPISpec | SmartAPIQueryResult) {
+    super(path, apiList, smartapiSpecs);
     this._teamName = teamName;
   }
 

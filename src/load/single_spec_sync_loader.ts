@@ -8,8 +8,8 @@ export default class SingleSpecSyncLoader extends AllSpecsSyncLoader {
   private _smartAPIID: string;
   private _apiList: apiListObject | undefined;
 
-  constructor(smartAPIID: string, path: string, apiList?: apiListObject) {
-    super(path);
+  constructor(smartAPIID: string, path: string, apiList?: apiListObject, smartapiSpecs?: SmartAPISpec | SmartAPIQueryResult) {
+    super(path, smartapiSpecs);
     this._smartAPIID = smartAPIID;
     this._apiList = apiList;
   }
