@@ -17,9 +17,9 @@ export default class MetaKG {
   /**
    * constructor to build meta knowledge graph from SmartAPI Specifications
    */
-  constructor(path: string = undefined, predicates_path: string = undefined) {
+  constructor(path: string = undefined, predicates_path: string = undefined, ops: SmartAPIKGOperationObject[] = []) {
     // store all meta-kg operations
-    this._ops = [];
+    this._ops = ops;
     this.path = path;
     this.predicates_path = predicates_path;
   }
