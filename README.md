@@ -83,7 +83,28 @@ pnpm i @biothings-explorer/smartapi-kg
       meta_kg.constructMetaKGSync();
     ```
 
-  - Option 9: Load Meta-KG with an api list
+  - Option 9: Load Meta-KG from data you specify
+
+    ```javascript
+      const smartapiSpecs = {} // This should contain your smartapi specs: could be from file read, redis, etc.
+      const predicates = [] // This should contain predicates data on TRAPI APIs (optional)
+
+      let meta_kg = new MetaKG();
+      meta_kg.constructMetaKGSync(includeReasoner = true, { predicates, smartapiSpecs });
+    ```
+
+  - Option 10: Load Meta-KG from operations you specify
+
+    ```javascript
+      const meta_kg_old = new MetaKG();
+      meta_kg_old.constructMetaKGSync();
+      const ops = meta_kg_old.ops; // ops can be transfered over a network/threads since it just stores JSON
+
+      // loading a new MetaKG from the operations
+      const meta_kg = new MetaKG(undefined, undefined, ops);
+    ```
+
+  - Option 11: Load Meta-KG with an api list
     ```javascript
     meta_kg.constructMetaKGSync(includeReasoner=true, {apiList: [
       {
