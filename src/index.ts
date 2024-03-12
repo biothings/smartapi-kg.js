@@ -5,6 +5,7 @@ import { BuilderOptions, FilterCriteria } from "./types";
 import { ft } from "./filter";
 import path from "path";
 import Debug from "debug";
+import QueryOperationObject from "./parser/query_operation";
 const debug = Debug("bte:smartapi-kg:MetaKG");
 
 export * from "./types";
@@ -19,6 +20,9 @@ export default class MetaKG {
    */
   constructor(path: string = undefined, predicates_path: string = undefined, ops: SmartAPIKGOperationObject[] = []) {
     // store all meta-kg operations
+    ops.forEach(op => {
+      op.query_operation = QueryOperationObject.unfreeze(op.query_operation);
+    });
     this._ops = ops;
     this.path = path;
     this.predicates_path = predicates_path;
@@ -61,6 +65,23 @@ export default class MetaKG {
     this._ops = syncBuilderFactory(options, includeReasoner, this._file_path, this._predicates_path);
     return this.ops;
   }
+
+  /**
+   * Filters the whole meta kg based on apiList, teamName, tag or component
+   * @param {Object} options - filtering options
+   */
+  filterKG(options: BuilderOptions = {}) {
+    if (options.smartAPIID) {
+      this._ops = this._ops.filter(op => op.association.smartapi.id === options.smartAPIID);
+    } else if (options.teamName) {
+      this._ops = this._ops.filter(op => op.association?.["x-translator"]?.teamName === options.teamName);
+    } else if (options.tag) {
+      this._ops = this._ops.filter(op => op.tags?.includes(options.tag));
+    } else if (options.component) {
+      this._ops = this._ops.filter(op => op.association?.["x-translator"]?.component === options.component);
+    }
+  }
+
 
   /**
    * Filter the Meta-KG operations based on specific criteria
