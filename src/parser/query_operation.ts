@@ -15,6 +15,24 @@ export default class QueryOperationObject implements QueryOperationInterface {
   private _pathParams: string[];
   private _templateInputs: any;
 
+  static unfreeze(obj: any) {
+    const newObj = new QueryOperationObject();
+    newObj._params = obj._params;
+    newObj._requestBody = obj._requestBody;
+    newObj._requestBodyType = obj._requestBodyType;
+    newObj._supportBatch = obj._supportBatch;
+    newObj._batchSize = obj._batchSize;
+    newObj._useTemplating = obj._useTemplating;
+    newObj._inputSeparator = obj._inputSeparator;
+    newObj._path = obj._path;
+    newObj._method = obj._method;
+    newObj._server = obj._server;
+    newObj._tags = obj._tags;
+    newObj._pathParams = obj._pathParams;
+    newObj._templateInputs = obj._templateInputs;
+    return newObj;
+  }
+
   set xBTEKGSOperation(newOp: XBTEKGSOperationObject) {
     this._params = newOp.parameters;
     this._requestBody = newOp.requestBody;

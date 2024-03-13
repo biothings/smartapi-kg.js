@@ -18,7 +18,7 @@ export default abstract class BaseOperationsBuilder {
         const parser = new API(spec);
         if (!parser.metadata.url) throw new Error("No suitable server present");
         const ops = parser.metadata.operations;
-        allOps = [...allOps, ...ops];
+        allOps.push.apply(allOps, ops)
       } catch (err) {
         // debug(JSON.stringify(spec.paths))
         debug(`[error]: Unable to parse spec, ${spec ? spec.info.title : spec}. Error message is ${err.toString()}`);

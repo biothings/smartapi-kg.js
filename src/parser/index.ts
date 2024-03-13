@@ -168,7 +168,7 @@ export default class API implements APIClass {
     if ("paths" in this.smartapiDoc) {
       for (const path of Object.keys(this.smartapiDoc.paths)) {
         const ep = new Endpoint(this.smartapiDoc.paths[path], apiMeta, path);
-        ops = [...ops, ...ep.constructEndpointInfo()];
+        ops.push.apply(ops, ep.constructEndpointInfo());
       }
     }
     return ops;

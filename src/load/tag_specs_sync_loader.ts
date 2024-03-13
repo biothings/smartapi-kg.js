@@ -5,8 +5,8 @@ import AllSpecsSyncLoader from "./all_specs_sync_loader";
 export default class TagSpecsSyncLoader extends AllSpecsSyncLoader {
   private _tag: string;
 
-  constructor(tag: string, path: string) {
-    super(path);
+  constructor(tag: string, path: string, smartapiSpecs?: SmartAPISpec | SmartAPIQueryResult) {
+    super(path, smartapiSpecs);
     this._tag = tag;
   }
 

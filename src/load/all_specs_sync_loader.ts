@@ -7,14 +7,22 @@ const debug = Debug("bte:smartapi-kg:AllSpecsSyncLoader");
 
 export default class AllSpecsSyncLoader extends BaseLoader {
   private _file_path: string;
-  constructor(path: string) {
+  private _smartapiSpecs?: SmartAPISpec | SmartAPIQueryResult;
+  constructor(path: string, smartapiSpecs?: SmartAPISpec | SmartAPIQueryResult) {
     super();
     this._file_path = path;
+    this._smartapiSpecs = smartapiSpecs;
   }
   protected fetch(): SmartAPIQueryResult {
-    debug(`Fetching from file path: ${this._file_path}`);
-    const file = fs.readFileSync(this._file_path, "utf-8");
-    const data = JSON.parse(file) as SmartAPIQueryResult | SmartAPISpec;
+    let data: SmartAPIQueryResult | SmartAPISpec;
+    if (this._smartapiSpecs) {
+        data = this._smartapiSpecs;
+    } else {
+        debug(`Fetching from file path: ${this._file_path}`);
+        const file = fs.readFileSync(this._file_path, "utf-8");
+        data = JSON.parse(file) as SmartAPIQueryResult | SmartAPISpec;
+    }
+
     let result;
     if (!("hits" in data)) {
       result = {

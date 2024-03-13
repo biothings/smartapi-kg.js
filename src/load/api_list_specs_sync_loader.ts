@@ -7,8 +7,8 @@ const debug = Debug("bte:smartapi-kg:APIListSpecsSyncLoader");
 export default class APIListSpecsSyncLoader extends AllSpecsSyncLoader {
   private _apiList: apiListObject | undefined;
 
-  constructor(path: string, apiList?: apiListObject) {
-    super(path);
+  constructor(path: string, apiList?: apiListObject, smartapiSpecs?: SmartAPISpec | SmartAPIQueryResult) {
+    super(path, smartapiSpecs);
     this._apiList = apiList;
   }
 

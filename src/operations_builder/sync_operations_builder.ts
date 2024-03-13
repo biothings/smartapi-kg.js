@@ -18,6 +18,7 @@ export default class SyncOperationsBuilder extends BaseOperationsBuilder {
       this._options.component,
       this._options.apiList,
       this._file_path,
+      this._options.smartapiSpecs
     );
     return this.loadOpsFromSpecs(specs);
   }
