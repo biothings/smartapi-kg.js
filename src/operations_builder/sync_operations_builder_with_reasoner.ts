@@ -180,7 +180,7 @@ export default class SyncOperationsBuilderWithReasoner extends BaseOperationsBui
     );
     let TRAPIOps = [] as SmartAPIKGOperationObject[];
     predicatesMetadata.map(metadata => {
-      TRAPIOps = [...TRAPIOps, ...this.parsePredicateEndpoint(metadata)];
+      TRAPIOps.push.apply(TRAPIOps, this.parsePredicateEndpoint(metadata));
     });
     const returnValue = [...nonTRAPIOps, ...TRAPIOps];
     return returnValue;
