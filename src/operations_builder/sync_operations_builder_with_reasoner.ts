@@ -16,7 +16,11 @@ export default class SyncOperationsBuilderWithReasoner extends BaseOperationsBui
   private _file_path: string;
   private _predicates_file_path: string;
 
-  constructor(options: BuilderOptions, path: string, predicates_file_path: string) {
+  constructor(
+    options: BuilderOptions,
+    path: string,
+    predicates_file_path: string,
+  ) {
     super(options);
     this._file_path = path;
     this._predicates_file_path = predicates_file_path;
@@ -32,7 +36,9 @@ export default class SyncOperationsBuilderWithReasoner extends BaseOperationsBui
     return input;
   }
 
-  private parsePredicateEndpoint(metadata: PredicatesMetadata): SmartAPIKGOperationObject[] {
+  private parsePredicateEndpoint(
+    metadata: PredicatesMetadata,
+  ): SmartAPIKGOperationObject[] {
     const ops = [] as SmartAPIKGOperationObject[];
     if (!("predicates" in metadata)) {
       return ops;
@@ -49,7 +55,9 @@ export default class SyncOperationsBuilderWithReasoner extends BaseOperationsBui
                 input_id: metadata?.nodes?.[sbj]?.id_prefixes,
                 output_type: this.removeBioLinkPrefix(obj),
                 output_id: metadata?.nodes?.[obj]?.id_prefixes,
-                predicate: this.removeBioLinkPrefix(typeof pred === "string" ? pred : pred.predicate),
+                predicate: this.removeBioLinkPrefix(
+                  typeof pred === "string" ? pred : pred.predicate,
+                ),
                 api_name: metadata.association.api_name,
                 smartapi: metadata.association.smartapi,
                 qualifiers:
@@ -87,13 +95,17 @@ export default class SyncOperationsBuilderWithReasoner extends BaseOperationsBui
           api => api.id === op.association.smartapi.id && api.id !== undefined,
         );
         const includeInfoRes = this._options.apiList.include.find(
-          api => api.infores === op.association?.["x-translator"]?.infores && api.infores !== undefined,
+          api =>
+            api.infores === op.association?.["x-translator"]?.infores &&
+            api.infores !== undefined,
         );
         const excludeSmartAPI = this._options.apiList.exclude.find(
           api => api.id === op.association.smartapi.id && api.id !== undefined,
         );
         const excludeInfoRes = this._options.apiList.exclude.find(
-          api => api.infores === op.association?.["x-translator"]?.infores && api.infores !== undefined,
+          api =>
+            api.infores === op.association?.["x-translator"]?.infores &&
+            api.infores !== undefined,
         );
 
         let willBeIncluded;
@@ -170,7 +182,9 @@ export default class SyncOperationsBuilderWithReasoner extends BaseOperationsBui
         "x-trapi" in spec.info &&
         spec.servers.length &&
         "/meta_knowledge_graph" in spec.paths &&
-        !predicatesMetadata.map(m => m.association.smartapi.id).includes(spec._id),
+        !predicatesMetadata
+          .map(m => m.association.smartapi.id)
+          .includes(spec._id),
     );
     let TRAPIOps = [] as SmartAPIKGOperationObject[];
     predicatesMetadata.map(metadata => {

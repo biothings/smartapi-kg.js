@@ -148,7 +148,11 @@ export interface XTRAPIObject {
   rate_limit?: number;
 }
 
-interface KGAssociationObject {
+export interface KGQualifiersObject {
+  [qualifierType: string]: string | string[];
+}
+
+export interface KGAssociationObject {
   input_id?: string | string[];
   input_type: string;
   output_id?: string | string[];
@@ -161,9 +165,7 @@ interface KGAssociationObject {
   smartapi?: SmartAPIRegistryRecordObject;
   "x-translator"?: any;
   "x-trapi"?: XTRAPIObject;
-  qualifiers?: {
-    [qualifierType: string]: string | string[];
-  };
+  qualifiers?: KGQualifiersObject;
 }
 
 export interface QueryOperationInterface {
