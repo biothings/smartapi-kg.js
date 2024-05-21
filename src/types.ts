@@ -22,6 +22,8 @@ export interface BuilderOptions {
   smartAPIID?: string;
   component?: string;
   apiList?: apiListObject;
+  predicates?: PredicatesMetadata[];
+  smartapiSpecs?: SmartAPISpec | SmartAPIQueryResult;
 }
 
 interface PredicatesQueryOperationInterface {

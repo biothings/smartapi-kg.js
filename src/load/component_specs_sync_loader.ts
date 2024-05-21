@@ -5,8 +5,8 @@ import AllSpecsSyncLoader from "./all_specs_sync_loader";
 export default class ComponentSpecsSyncLoader extends AllSpecsSyncLoader {
   private _component: string;
 
-  constructor(component: string, path: string) {
-    super(path);
+  constructor(component: string, path: string, smartapiSpecs?: SmartAPISpec | SmartAPIQueryResult) {
+    super(path, smartapiSpecs);
     this._component = component;
   }
 

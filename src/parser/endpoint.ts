@@ -151,7 +151,7 @@ export default class Endpoint {
             operation = this.resolveRefIfProvided(rec);
             operation = Array.isArray(operation) ? operation : [operation];
             for (op of operation) {
-              res = [...res, ...this.parseIndividualOperation({ op, method, pathParams })];
+              res.push.apply(res, this.parseIndividualOperation({ op, method, pathParams }));
             }
           }
         }
