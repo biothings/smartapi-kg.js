@@ -1,4 +1,4 @@
-import { QueryOperationInterface, XBTEKGSOperationObject, XBTEParametersObject } from "./types";
+import { PaginationData, QueryOperationInterface, XBTEKGSOperationObject, XBTEParametersObject } from "./types";
 
 export default class QueryOperationObject implements QueryOperationInterface {
   private _params: XBTEParametersObject;
@@ -14,6 +14,8 @@ export default class QueryOperationObject implements QueryOperationInterface {
   private _tags: string[];
   private _pathParams: string[];
   private _templateInputs: any;
+  private _paginated: boolean;
+  private _paginationData: PaginationData;
 
   set xBTEKGSOperation(newOp: XBTEKGSOperationObject) {
     this._params = newOp.parameters;
@@ -24,6 +26,8 @@ export default class QueryOperationObject implements QueryOperationInterface {
     this._inputSeparator = newOp.inputSeparator;
     this._templateInputs = newOp.templateInputs;
     this._batchSize = newOp.batchSize;
+    this._paginated = !!newOp.pagination?.countField && !!newOp.pagination?.pageSize && !!newOp.pagination?.totalField;
+    this._paginationData = newOp.pagination;
   }
 
   get templateInputs(): any {
@@ -96,5 +100,13 @@ export default class QueryOperationObject implements QueryOperationInterface {
 
   set path_params(newPathParams: string[]) {
     this._pathParams = newPathParams;
+  }
+
+  get paginated(): boolean {
+      return this._paginated;
+  }
+
+  get paginationData(): PaginationData {
+      return this._paginationData;
   }
 }
