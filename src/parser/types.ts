@@ -107,6 +107,12 @@ export interface XBTEKGSOperationBioEntityObject {
   semantic: string;
 }
 
+export interface PaginationData {
+  countField: string; 
+  totalField: string; 
+  pageSize: number;
+}
+
 export interface XBTEKGSOperationObject {
   inputs: XBTEKGSOperationBioEntityObject[];
   outputs: XBTEKGSOperationBioEntityObject[];
@@ -125,6 +131,7 @@ export interface XBTEKGSOperationObject {
   batchSize?: number;
   knowledge_level?: string;
   agent_type?: string;
+  pagination?: PaginationData;
 }
 
 export interface SmartAPISpec {
@@ -184,6 +191,8 @@ export interface QueryOperationInterface {
   inputSeparator: string;
   useTemplating?: boolean;
   templateInputs?: any;
+  paginated?: boolean;
+  paginationData?: PaginationData;
 }
 
 export interface SmartAPIKGOperationObject {
