@@ -129,6 +129,7 @@ export default class Endpoint {
           association,
           response_mapping: responseMapping,
           tags: queryOperation.tags,
+          testExamples: op.testExamples,
         };
         res.push(updateInfo);
       }
