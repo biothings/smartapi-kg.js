@@ -1,118 +1,46 @@
 import { QueryOperationInterface, XBTEKGSOperationObject, XBTEParametersObject } from "./types";
 
 export default class QueryOperationObject implements QueryOperationInterface {
-  private _params: XBTEParametersObject;
-  private _requestBody: any;
-  private _requestBodyType: string;
-  private _supportBatch: boolean;
-  private _batchSize: number;
-  private _useTemplating: boolean;
-  private _inputSeparator: string;
-  private _path: string;
-  private _method: string;
-  private _server: string;
-  private _tags: string[];
-  private _pathParams: string[];
-  private _templateInputs: any;
+  params: XBTEParametersObject;
+  request_body: any;
+  requestBodyType: string;
+  supportBatch: boolean;
+  batchSize: number;
+  useTemplating: boolean;
+  inputSeparator: string;
+  path: string;
+  method: string;
+  server: string;
+  tags: string[];
+  path_params: string[];
+  templateInputs: any;
 
   static unfreeze(obj: any) {
     const newObj = new QueryOperationObject();
-    newObj._params = obj._params;
-    newObj._requestBody = obj._requestBody;
-    newObj._requestBodyType = obj._requestBodyType;
-    newObj._supportBatch = obj._supportBatch;
-    newObj._batchSize = obj._batchSize;
-    newObj._useTemplating = obj._useTemplating;
-    newObj._inputSeparator = obj._inputSeparator;
-    newObj._path = obj._path;
-    newObj._method = obj._method;
-    newObj._server = obj._server;
-    newObj._tags = obj._tags;
-    newObj._pathParams = obj._pathParams;
-    newObj._templateInputs = obj._templateInputs;
+    newObj.params = obj.params;
+    newObj.request_body = obj.requestBody;
+    newObj.requestBodyType = obj.requestBodyType;
+    newObj.supportBatch = obj.supportBatch;
+    newObj.batchSize = obj.batchSize;
+    newObj.useTemplating = obj.useTemplating;
+    newObj.inputSeparator = obj.inputSeparator;
+    newObj.path = obj.path;
+    newObj.method = obj.method;
+    newObj.server = obj.server;
+    newObj.tags = obj.tags;
+    newObj.path_params = obj.path_params;
+    newObj.templateInputs = obj.templateInputs;
     return newObj;
   }
 
   set xBTEKGSOperation(newOp: XBTEKGSOperationObject) {
-    this._params = newOp.parameters;
-    this._requestBody = newOp.requestBody;
-    this._requestBodyType = newOp.requestBodyType;
-    this._supportBatch = newOp.supportBatch;
-    this._useTemplating = newOp.useTemplating;
-    this._inputSeparator = newOp.inputSeparator;
-    this._templateInputs = newOp.templateInputs;
-    this._batchSize = newOp.batchSize;
-  }
-
-  get templateInputs(): any {
-    return this._templateInputs;
-  }
-
-  get params(): XBTEParametersObject {
-    return this._params;
-  }
-
-  get request_body(): any {
-    return this._requestBody;
-  }
-
-  get requestBodyType(): string {
-    return this._requestBodyType;
-  }
-
-  get supportBatch(): boolean {
-    return this._supportBatch;
-  }
-
-  get batchSize(): number {
-    return this._batchSize;
-  }
-
-  get useTemplating(): boolean {
-    return this._useTemplating;
-  }
-
-  get inputSeparator(): string {
-    return this._inputSeparator;
-  }
-
-  set path(newPath: string) {
-    this._path = newPath;
-  }
-
-  get path(): string {
-    return this._path;
-  }
-
-  get method(): string {
-    return this._method;
-  }
-
-  set method(newMethod: string) {
-    this._method = newMethod;
-  }
-
-  get server(): string {
-    return this._server;
-  }
-
-  set server(newServer: string) {
-    this._server = newServer;
-  }
-
-  get tags(): string[] {
-    return this._tags;
-  }
-
-  set tags(newTags: string[]) {
-    this._tags = newTags;
-  }
-
-  get path_params(): string[] {
-    return this._pathParams;
-  }
-
-  set path_params(newPathParams: string[]) {
-    this._pathParams = newPathParams;
+    this.params = newOp.parameters;
+    this.request_body = newOp.requestBody;
+    this.requestBodyType = newOp.requestBodyType;
+    this.supportBatch = newOp.supportBatch;
+    this.useTemplating = newOp.useTemplating;
+    this.inputSeparator = newOp.inputSeparator;
+    this.templateInputs = newOp.templateInputs;
+    this.batchSize = newOp.batchSize;
   }
 }
