@@ -17,19 +17,19 @@ export default class QueryOperationObject implements QueryOperationInterface {
 
   static unfreeze(obj: any) {
     const newObj = new QueryOperationObject();
-    newObj._params = obj._params;
-    newObj._requestBody = obj._requestBody;
-    newObj._requestBodyType = obj._requestBodyType;
-    newObj._supportBatch = obj._supportBatch;
-    newObj._batchSize = obj._batchSize;
-    newObj._useTemplating = obj._useTemplating;
-    newObj._inputSeparator = obj._inputSeparator;
-    newObj._path = obj._path;
-    newObj._method = obj._method;
-    newObj._server = obj._server;
-    newObj._tags = obj._tags;
-    newObj._pathParams = obj._pathParams;
-    newObj._templateInputs = obj._templateInputs;
+    newObj._params = obj._params ?? obj.params;
+    newObj._requestBody = obj._requestBody ?? obj.request_body;
+    newObj._requestBodyType = obj._requestBodyType ?? obj.requestBodyType;
+    newObj._supportBatch = obj._supportBatch ?? obj.supportBatch;
+    newObj._batchSize = obj._batchSize ?? obj.batchSize;
+    newObj._useTemplating = obj._useTemplating ?? obj.useTemplating;
+    newObj._inputSeparator = obj._inputSeparator ?? obj.inputSeparator;
+    newObj._path = obj._path ?? obj.path;
+    newObj._method = obj._method ?? obj.method;
+    newObj._server = obj._server ?? obj.server;
+    newObj._tags = obj._tags ?? obj.tags;
+    newObj._pathParams = obj._pathParams ?? obj.path_params;
+    newObj._templateInputs = obj._templateInputs ?? obj.templateInputs;
     return newObj;
   }
 
