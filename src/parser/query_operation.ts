@@ -18,7 +18,7 @@ export default class QueryOperationObject implements QueryOperationInterface {
   static unfreeze(obj: any) {
     const newObj = new QueryOperationObject();
     newObj.params = obj.params;
-    newObj.request_body = obj.requestBody;
+    newObj.request_body = obj.request_body;
     newObj.requestBodyType = obj.requestBodyType;
     newObj.supportBatch = obj.supportBatch;
     newObj.batchSize = obj.batchSize;
