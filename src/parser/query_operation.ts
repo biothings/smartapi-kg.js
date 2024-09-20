@@ -1,4 +1,4 @@
-import { QueryOperationInterface, XBTEKGSOperationObject, XBTEParametersObject } from "./types";
+import { PaginationData, QueryOperationInterface, XBTEKGSOperationObject, XBTEParametersObject } from "./types";
 
 export default class QueryOperationObject implements QueryOperationInterface {
   params: XBTEParametersObject;
@@ -14,6 +14,8 @@ export default class QueryOperationObject implements QueryOperationInterface {
   tags: string[];
   path_params: string[];
   templateInputs: any;
+  paginated: boolean;
+  paginationData: PaginationData;
 
   static unfreeze(obj: any) {
     const newObj = new QueryOperationObject();
@@ -42,5 +44,7 @@ export default class QueryOperationObject implements QueryOperationInterface {
     this.inputSeparator = newOp.inputSeparator;
     this.templateInputs = newOp.templateInputs;
     this.batchSize = newOp.batchSize;
+    this.paginated = !!newOp.pagination?.countField && !!newOp.pagination?.pageSize && !!newOp.pagination?.totalField;
+    this.paginationData = newOp.pagination;
   }
 }
