@@ -175,6 +175,7 @@ export interface KGAssociationObject {
   "x-translator"?: any;
   "x-trapi"?: XTRAPIObject;
   qualifiers?: KGQualifiersObject;
+  [additionalProperties: string]: any;
 }
 
 export interface QueryOperationInterface {
@@ -191,6 +192,12 @@ export interface QueryOperationInterface {
   inputSeparator: string;
   useTemplating?: boolean;
   templateInputs?: any;
+  transformer?: {
+    jq: {
+      wrap: string;
+      pair: string;
+    };
+  };
   paginated?: boolean;
   paginationData?: PaginationData;
 }
