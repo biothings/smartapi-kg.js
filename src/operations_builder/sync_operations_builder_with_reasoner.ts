@@ -7,6 +7,7 @@ import { PredicatesMetadata } from "../types";
 import Debug from "debug";
 const debug = Debug("bte:smartapi-kg:SyncOperationsBuilderWithReasoner");
 import { SmartAPISpec } from "../parser/types";
+import { biolink } from "@biothings-explorer/utils";
 
 declare global {
   var missingAPIs: SmartAPISpec[];
@@ -49,7 +50,7 @@ export default class SyncOperationsBuilderWithReasoner extends BaseOperationsBui
       Object.keys(metadata.predicates[obj]).map(sbj => {
         if (Array.isArray(metadata.predicates[obj][sbj])) {
           metadata.predicates[obj][sbj].map(pred => {
-            ops.push({
+            const op = {
               association: {
                 input_type: this.removeBioLinkPrefix(sbj),
                 input_id: metadata?.nodes?.[sbj]?.id_prefixes,
@@ -64,11 +65,11 @@ export default class SyncOperationsBuilderWithReasoner extends BaseOperationsBui
                   typeof pred === "string" || !pred.qualifiers
                     ? undefined
                     : Object.fromEntries(
-                        pred.qualifiers.map((q: any) => [
-                          this.removeBioLinkPrefix(q.qualifier_type_id),
-                          q.applicable_values.map(this.removeBioLinkPrefix),
-                        ]),
-                      ),
+                      pred.qualifiers.map((q: any) => [
+                        this.removeBioLinkPrefix(q.qualifier_type_id),
+                        q.applicable_values.map(this.removeBioLinkPrefix),
+                      ]),
+                    ),
                 "x-translator": metadata.association["x-translator"],
                 "x-trapi": metadata.association["x-trapi"],
               },
@@ -84,7 +85,65 @@ export default class SyncOperationsBuilderWithReasoner extends BaseOperationsBui
                 inputSeparator: ",",
                 tags: [...metadata.tags, ...["bte-trapi"]],
               },
-            });
+            };
+            ops.push(op);
+            if (
+              !this._options.apiList ||
+              !this._options.apiList.include.find(
+                api => api.id === metadata.association.smartapi.id,
+              )?.includeFlipped
+            ) {
+              return;
+            }
+            // Add inverse metaEdge if includeFlipped is true
+            const inverse_op = {
+              ...op,
+              association: {
+                ...op.association,
+                input_type: this.removeBioLinkPrefix(obj),
+                input_id: metadata?.nodes?.[obj]?.id_prefixes,
+                output_type: this.removeBioLinkPrefix(sbj),
+                output_id: metadata?.nodes?.[sbj]?.id_prefixes,
+                predicate: biolink.reverse(
+                  this.removeBioLinkPrefix(
+                    typeof pred === "string" ? pred : pred.predicate,
+                  ),
+                ),
+                qualifiers:
+                  typeof pred === "string" || !pred.qualifiers
+                    ? undefined
+                    : Object.fromEntries(
+                      pred.qualifiers.map((q: any) => {
+                        let newQualifierType: string = q.qualifier_type_id;
+                        let newQualifier: string[] = q.applicable_values.map(
+                          this.removeBioLinkPrefix,
+                        );
+                        if (newQualifierType.includes("predicate")) {
+                          newQualifier = newQualifier.map(biolink.reverse);
+                        }
+                        if (newQualifierType.includes("subject")) {
+                          newQualifierType = newQualifierType.replace(
+                            "subject",
+                            "object",
+                          );
+                        } else if (newQualifierType.includes("object")) {
+                          newQualifierType = newQualifierType.replace(
+                            "object",
+                            "subject",
+                          );
+                        }
+
+                        return [newQualifierType, newQualifier];
+                      }),
+                    ),
+              },
+            };
+            if (inverse_op.association.predicate) {
+              ops.push(inverse_op);
+              debug(
+                `Injected reverse MetaEdge for ${op.association.api_name} ( ${inverse_op.association.input_type} -> ${inverse_op.association.predicate} -> ${inverse_op.association.output_type} )`,
+              );
+            }
           });
         }
       });
@@ -150,7 +209,7 @@ export default class SyncOperationsBuilderWithReasoner extends BaseOperationsBui
 
   private fetch(): PredicatesMetadata[] {
     if (this._options.predicates) {
-        return this._options.predicates;
+      return this._options.predicates;
     }
 
     const file = fs.readFileSync(this._predicates_file_path, "utf-8");
@@ -166,7 +225,7 @@ export default class SyncOperationsBuilderWithReasoner extends BaseOperationsBui
       this._options.component,
       this._options.apiList,
       this._file_path,
-      this._options.smartapiSpecs
+      this._options.smartapiSpecs,
     );
     const nonTRAPIOps = this.loadOpsFromSpecs(specs);
     const predicatesMetadata = this.fetch();
@@ -177,7 +236,7 @@ export default class SyncOperationsBuilderWithReasoner extends BaseOperationsBui
       undefined,
       undefined,
       this._file_path,
-      this._options.smartapiSpecs
+      this._options.smartapiSpecs,
     ).filter(
       spec =>
         "info" in spec &&
