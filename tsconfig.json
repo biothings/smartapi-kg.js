@@ -13,7 +13,10 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "strict": false,
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "paths": {
+      "@biothings-explorer/utils": ["../utils"],
+    }
   },
   "include": [
     "./src/**/*",
@@ -23,5 +26,10 @@
   "exclude": [
     "node_modules",
     "__tests__/"
+  ],
+  "references": [
+    {
+      "path": "../utils"
+    }
   ]
 }
