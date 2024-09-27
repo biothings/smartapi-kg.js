@@ -1,6 +1,6 @@
 on: ["push", "pull_request"]
 
-name: Test Codecov
+name: Test in workspace
 
 jobs:
 
@@ -9,7 +9,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-    - uses: actions/checkout@v1
+    - name: Get branch name
+      id: branch-name
+      uses: tj-actions/branch-names@v6
+
+    - name: Checkout to specific branch
+      uses: actions/checkout@v3
+      id: specific-checkout
+      continue-on-error: true
+      with:
+        repository: biothings/biothings_explorer
+        ref: ${{ steps.branch-name.outputs.current_branch }}
+
+    - name: Checkout to main if above failed
+      if: steps.specific-checkout.outcome == 'failure'
+      uses: actions/checkout@v3
+      with:
+        repository: biothings/biothings_explorer
+        ref: main
 
     - name: Use Node.js 18.x
       uses: actions/setup-node@v3
@@ -23,10 +40,14 @@ jobs:
 
     - name: pnpm install, generate coverage report
       run: |
+        pnpm run clone
+        pnpm run git checkout ${{ steps.branch-name.outputs.current_branch }}
         pnpm i
-        pnpm run test-cov
+        pnpm --filter smartapi-kg test-cov
 
     - name: Send coverage report to codecov for visualization
       uses: codecov/codecov-action@v3
       with:
+        working-directory: ./packages/@biothings-explorer/query_graph_handler
+        files: ./coverage/lcov.info
         verbose: true
