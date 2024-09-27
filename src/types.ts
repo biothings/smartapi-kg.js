@@ -9,6 +9,7 @@ export interface apiListItem {
   id?: string;
   infores?: string;
   name: string;
+  includeFlipped?: boolean; // Automatically generate flipped MetaEdges (TRAPI only)
 }
 
 export interface apiListObject {
