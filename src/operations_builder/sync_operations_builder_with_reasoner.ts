@@ -46,6 +46,7 @@ export default class SyncOperationsBuilderWithReasoner extends BaseOperationsBui
     }
     //predicates are store as OBJ:{SUBJ:[predicates]}
     //parses each layer accordingly
+    let injectedOps = 0;
     Object.keys(metadata.predicates).map(obj => {
       Object.keys(metadata.predicates[obj]).map(sbj => {
         if (Array.isArray(metadata.predicates[obj][sbj])) {
@@ -140,14 +141,15 @@ export default class SyncOperationsBuilderWithReasoner extends BaseOperationsBui
             };
             if (inverse_op.association.predicate) {
               ops.push(inverse_op);
-              debug(
-                `Injected reverse MetaEdge for ${op.association.api_name} ( ${inverse_op.association.input_type} -> ${inverse_op.association.predicate} -> ${inverse_op.association.output_type} )`,
-              );
+              injectedOps += 1;
             }
           });
         }
       });
     });
+    if (injectedOps) {
+      debug(`Injected ${injectedOps} inverse operations for ${metadata.association.api_name}`);
+    }
     if (!(typeof this._options.apiList === "undefined")) {
       return ops.filter(op => {
         const includeSmartAPI = this._options.apiList.include.find(
