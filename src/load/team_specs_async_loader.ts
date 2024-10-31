@@ -5,7 +5,7 @@ import { SmartAPISpec } from "../parser/types";
 
 export default class TeamSpecsAsyncLoader extends BaseAsyncLoader {
   constructor(teamName: string) {
-    super(TEAM_SMARTAPI_QUERY_TEMPLATE.replace("{team_name}", teamName));
+    super(TEAM_SMARTAPI_QUERY_TEMPLATE.replace("{teamName}", teamName));
   }
 
   protected async fetch(): Promise<SmartAPIQueryResult> {
