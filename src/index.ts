@@ -4,7 +4,7 @@ import { SmartAPIKGOperationObject } from "./parser/types";
 import { BuilderOptions, FilterCriteria } from "./types";
 import { ft } from "./filter";
 import path from "path";
-import Debug from "debug";
+import { Debug } from "@biothings-explorer/utils";
 import QueryOperationObject from "./parser/query_operation";
 const debug = Debug("bte:smartapi-kg:MetaKG");
 
