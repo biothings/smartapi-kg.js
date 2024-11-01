@@ -3,7 +3,7 @@ import FailToLoadSpecError from "../exceptions/fail_to_load_spec";
 import { SmartAPIQueryResult } from "../types";
 import { SmartAPISpec } from "../parser/types";
 import BaseLoader from "./base_loader";
-import Debug from "debug";
+import { Debug } from "@biothings-explorer/utils";
 const debug = Debug("bte:smartapi-kg:AsyncLoader");
 
 export default abstract class BaseAsyncLoader extends BaseLoader {

@@ -2,7 +2,7 @@ import BaseLoader from "./base_loader";
 import { SmartAPIQueryResult } from "../types";
 import { SmartAPISpec } from "../parser/types";
 import fs from "fs";
-import Debug from "debug";
+import { Debug } from "@biothings-explorer/utils";
 const debug = Debug("bte:smartapi-kg:AllSpecsSyncLoader");
 
 export default class AllSpecsSyncLoader extends BaseLoader {

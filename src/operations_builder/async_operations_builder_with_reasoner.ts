@@ -3,7 +3,7 @@ import { SmartAPISpec, ParsedAPIMetadataObject, SmartAPIKGOperationObject } from
 import { ReasonerPredicatesResponse } from "../types";
 import API from "../parser/index";
 import axios from "axios";
-import Debug from "debug";
+import { Debug } from "@biothings-explorer/utils";
 const debug = Debug("bte:smartapi-kg:OperationsBuilder");
 
 export default class AsyncOperationsBuilderWithReasoner extends AsyncOperationsBuilder {
