@@ -7,7 +7,7 @@ import { PredicatesMetadata } from "../types";
 import Debug from "debug";
 const debug = Debug("bte:smartapi-kg:SyncOperationsBuilderWithReasoner");
 import { SmartAPISpec } from "../parser/types";
-import { biolink } from "@biothings-explorer/utils";
+import { biolink, lockWithActionSync } from "@biothings-explorer/utils";
 
 declare global {
   var missingAPIs: SmartAPISpec[];
@@ -220,39 +220,55 @@ export default class SyncOperationsBuilderWithReasoner extends BaseOperationsBui
   }
 
   build() {
-    const specs = syncLoaderFactory(
-      this._options.smartAPIID,
-      this._options.teamName,
-      this._options.tag,
-      this._options.component,
-      this._options.apiList,
+    const predicatesMetadata: PredicatesMetadata[] = lockWithActionSync(
+      this._predicates_file_path,
+      () => this.fetch(),
+      debug
+    )
+
+    let specs: SmartAPISpec[];
+    let nonTRAPIOps: SmartAPIKGOperationObject[];
+
+    lockWithActionSync(
       this._file_path,
-      this._options.smartapiSpecs,
+      () => {
+        specs = syncLoaderFactory(
+          this._options.smartAPIID,
+          this._options.teamName,
+          this._options.tag,
+          this._options.component,
+          this._options.apiList,
+          this._file_path,
+          this._options.smartapiSpecs,
+        );
+
+        nonTRAPIOps = this.loadOpsFromSpecs(specs);
+        global.missingAPIs = syncLoaderFactory(
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          this._file_path,
+          this._options.smartapiSpecs,
+        ).filter(
+          spec =>
+            "info" in spec &&
+            "x-translator" in spec.info &&
+            spec.info["x-translator"].component === "KP" &&
+            "paths" in spec &&
+            "/query" in spec.paths &&
+            "x-trapi" in spec.info &&
+            spec.servers.length &&
+            "/meta_knowledge_graph" in spec.paths &&
+            !predicatesMetadata
+              .map(m => m.association.smartapi.id)
+              .includes(spec._id),
+        );
+      },
+      debug
     );
-    const nonTRAPIOps = this.loadOpsFromSpecs(specs);
-    const predicatesMetadata = this.fetch();
-    global.missingAPIs = syncLoaderFactory(
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      this._file_path,
-      this._options.smartapiSpecs,
-    ).filter(
-      spec =>
-        "info" in spec &&
-        "x-translator" in spec.info &&
-        spec.info["x-translator"].component === "KP" &&
-        "paths" in spec &&
-        "/query" in spec.paths &&
-        "x-trapi" in spec.info &&
-        spec.servers.length &&
-        "/meta_knowledge_graph" in spec.paths &&
-        !predicatesMetadata
-          .map(m => m.association.smartapi.id)
-          .includes(spec._id),
-    );
+
     let TRAPIOps = [] as SmartAPIKGOperationObject[];
     predicatesMetadata.map(metadata => {
       TRAPIOps.push.apply(TRAPIOps, this.parsePredicateEndpoint(metadata));
