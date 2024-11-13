@@ -6,6 +6,7 @@ import { ft } from "./filter";
 import path from "path";
 import Debug from "debug";
 import QueryOperationObject from "./parser/query_operation";
+import { lockWithActionAsync } from "@biothings-explorer/utils";
 const debug = Debug("bte:smartapi-kg:MetaKG");
 
 export * from "./types";
@@ -63,6 +64,18 @@ export default class MetaKG {
    */
   constructMetaKGSync(includeReasoner = false, options: BuilderOptions = {}): SmartAPIKGOperationObject[] {
     this._ops = syncBuilderFactory(options, includeReasoner, this._file_path, this._predicates_path);
+    return this.ops;
+  }
+
+  /* Async wrapper for using constructMetaKGSync to enable using async file locking */
+  async constructMetaKGWithFileLock(includeReasoner = false, options: BuilderOptions = {}): Promise<SmartAPIKGOperationObject[]> {
+    this._ops = await lockWithActionAsync(
+      [this._file_path, this._predicates_path],
+      async () => {
+        return syncBuilderFactory(options, includeReasoner, this._file_path, this._predicates_path);
+      },
+      debug
+    );
     return this.ops;
   }
 
