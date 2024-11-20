@@ -1,7 +1,7 @@
 import AllSpecsSyncLoader from "./all_specs_sync_loader";
 import { apiListObject, SmartAPIQueryResult } from "../types";
 import { SmartAPISpec } from "../parser/types";
-import Debug from "debug";
+import { Debug } from "@biothings-explorer/utils";
 const debug = Debug("bte:smartapi-kg:SingleSpecSyncLoader");
 
 export default class SingleSpecSyncLoader extends AllSpecsSyncLoader {

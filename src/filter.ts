@@ -2,7 +2,7 @@ import { FILTER_FIELDS } from "./config";
 import _ from "lodash";
 import { FilterCriteria, ObjectWithValueAsSet, CompactQualifiers } from "./types";
 import { SmartAPIKGOperationObject } from "./parser/types";
-// import Debug from "debug";
+// import { Debug } from "@biothings-explorer/utils";
 // const debug = Debug("bte:smartapi-kg:Filter");
 
 const getUniqueValsForEachField = (operations: SmartAPIKGOperationObject[]): ObjectWithValueAsSet => {
