@@ -19,7 +19,11 @@ export default class MetaKG {
   /**
    * constructor to build meta knowledge graph from SmartAPI Specifications
    */
-  constructor(path: string = undefined, predicates_path: string = undefined, ops: SmartAPIKGOperationObject[] = []) {
+  constructor(
+    path: string = undefined,
+    predicates_path: string = undefined,
+    ops: SmartAPIKGOperationObject[] = [],
+  ) {
     // store all meta-kg operations
     ops.forEach(op => {
       op.query_operation = QueryOperationObject.unfreeze(op.query_operation);
@@ -53,7 +57,10 @@ export default class MetaKG {
    * Construct API Meta Knowledge Graph based on SmartAPI Specifications.
    * @param {boolean} includeReasoner - specify whether to include reasonerStdAPI into meta-kg
    */
-  async constructMetaKG(includeReasoner = false, options: BuilderOptions = {}): Promise<SmartAPIKGOperationObject[]> {
+  async constructMetaKG(
+    includeReasoner = false,
+    options: BuilderOptions = {},
+  ): Promise<SmartAPIKGOperationObject[]> {
     this._ops = await asyncBuilderFactory(options, includeReasoner);
     return this.ops;
   }
@@ -62,19 +69,35 @@ export default class MetaKG {
    * Construct API Meta Knowledge Graph based on SmartAPI Specifications.
    * @param {string} tag - the SmartAPI tag to be filtered on
    */
-  constructMetaKGSync(includeReasoner = false, options: BuilderOptions = {}): SmartAPIKGOperationObject[] {
-    this._ops = syncBuilderFactory(options, includeReasoner, this._file_path, this._predicates_path);
+  constructMetaKGSync(
+    includeReasoner = false,
+    options: BuilderOptions = {},
+  ): SmartAPIKGOperationObject[] {
+    this._ops = syncBuilderFactory(
+      options,
+      includeReasoner,
+      this._file_path,
+      this._predicates_path,
+    );
     return this.ops;
   }
 
   /* Async wrapper for using constructMetaKGSync to enable using async file locking */
-  async constructMetaKGWithFileLock(includeReasoner = false, options: BuilderOptions = {}): Promise<SmartAPIKGOperationObject[]> {
+  async constructMetaKGWithFileLock(
+    includeReasoner = false,
+    options: BuilderOptions = {},
+  ): Promise<SmartAPIKGOperationObject[]> {
     this._ops = await lockWithActionAsync(
       [this._file_path, this._predicates_path],
       async () => {
-        return syncBuilderFactory(options, includeReasoner, this._file_path, this._predicates_path);
+        return syncBuilderFactory(
+          options,
+          includeReasoner,
+          this._file_path,
+          this._predicates_path,
+        );
       },
-      debug
+      debug,
     );
     return this.ops;
   }
@@ -85,16 +108,23 @@ export default class MetaKG {
    */
   filterKG(options: BuilderOptions = {}) {
     if (options.smartAPIID) {
-      this._ops = this._ops.filter(op => op.association.smartapi.id === options.smartAPIID);
+      this._ops = this._ops.filter(
+        op => op.association.smartapi.id === options.smartAPIID,
+      );
     } else if (options.teamName) {
-      this._ops = this._ops.filter(op => op.association?.["x-translator"]?.teamName === options.teamName);
+      this._ops = this._ops.filter(
+        op =>
+          Array.isArray(op.association?.["x-translator"]?.team) &&
+          op.association?.["x-translator"]?.team.includes(options.teamName),
+      );
     } else if (options.tag) {
       this._ops = this._ops.filter(op => op.tags?.includes(options.tag));
     } else if (options.component) {
-      this._ops = this._ops.filter(op => op.association?.["x-translator"]?.component === options.component);
+      this._ops = this._ops.filter(
+        op => op.association?.["x-translator"]?.component === options.component,
+      );
     }
   }
-
 
   /**
    * Filter the Meta-KG operations based on specific criteria

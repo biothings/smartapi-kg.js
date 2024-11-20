@@ -5,7 +5,7 @@ import { SmartAPISpec } from "../parser/types";
 export default class SingleSpecAsyncLoader extends BaseAsyncLoader {
   private _smartapi_id: string;
   constructor(smartAPIID: string) {
-    super(SINGLE_API_SMARTAPI_QUERY_TEMPLATE.replace("{smartapi_id}", smartAPIID));
+    super(SINGLE_API_SMARTAPI_QUERY_TEMPLATE.replace("{smartAPIID}", smartAPIID));
     this._smartapi_id = smartAPIID;
   }
 
