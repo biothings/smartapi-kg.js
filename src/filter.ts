@@ -71,7 +71,7 @@ export function ft(ops: SmartAPIKGOperationObject[], criteria: FilterCriteria): 
                 ? rec.association[field][qualifierType]
                 : [rec.association[field][qualifierType]];
 
-              return associationValueArray.length === 0 || qualifierValueArray.some(value => {
+              return qualifierValueArray.some(value => {
                 return associationValueArray.includes(value);
               });
             },

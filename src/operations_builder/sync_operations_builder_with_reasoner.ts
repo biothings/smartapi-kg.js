@@ -68,7 +68,7 @@ export default class SyncOperationsBuilderWithReasoner extends BaseOperationsBui
                     : Object.fromEntries(
                       pred.qualifiers.map((q: any) => [
                         this.removeBioLinkPrefix(q.qualifier_type_id),
-                        q.applicable_values?.map(this.removeBioLinkPrefix) ?? [],
+                        q.applicable_values.map(this.removeBioLinkPrefix),
                       ]),
                     ),
                 "x-translator": metadata.association["x-translator"],
