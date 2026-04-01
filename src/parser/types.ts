@@ -20,6 +20,11 @@ interface SmartAPIServerObject {
   "x-maturity": any;
 }
 
+export interface TestExampleObject {
+  qInput: string;
+  oneOutput: string;
+}
+
 export interface SmartAPIReferenceObject {
   $ref?: string;
 }
@@ -116,6 +121,7 @@ export interface PaginationData {
 export interface XBTEKGSOperationObject {
   inputs: XBTEKGSOperationBioEntityObject[];
   outputs: XBTEKGSOperationBioEntityObject[];
+  testExamples?: TestExampleObject[];
   predicate: string;
   qualifiers?: { [qualifierType: string]: string };
   source?: string;
@@ -201,6 +207,7 @@ export interface SmartAPIKGOperationObject {
   response_mapping?: any;
   id?: string;
   tags?: string[];
+  testExamples?: TestExampleObject[];
 }
 
 export interface ParsedAPIMetadataObject {
