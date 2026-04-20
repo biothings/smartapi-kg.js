@@ -4,7 +4,7 @@ import { BuilderOptions } from "../types";
 import fs from "fs";
 import { SmartAPIKGOperationObject } from "../parser/types";
 import { PredicatesMetadata } from "../types";
-import Debug from "debug";
+import { Debug } from "@biothings-explorer/utils";
 const debug = Debug("bte:smartapi-kg:SyncOperationsBuilderWithReasoner");
 import { SmartAPISpec } from "../parser/types";
 import { biolink } from "@biothings-explorer/utils";

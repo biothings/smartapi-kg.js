@@ -1,7 +1,7 @@
 import { BuilderOptions } from "../types";
 import { SmartAPIKGOperationObject, SmartAPISpec } from "../parser/types";
 import API from "../parser/index";
-import Debug from "debug";
+import { Debug } from "@biothings-explorer/utils";
 const debug = Debug("bte:smartapi-kg:OperationsBuilder");
 
 export default abstract class BaseOperationsBuilder {

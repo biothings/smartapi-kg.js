@@ -1,6 +1,6 @@
 import Components from "./component";
 import Endpoint from "./endpoint";
-import Debug from "debug";
+import { Debug } from "@biothings-explorer/utils";
 const debug = Debug("bte:smartapi-kg:Parser");
 import { SmartAPISpec, ParsedAPIMetadataObject, SmartAPIKGOperationObject, APIClass } from "./types";
 

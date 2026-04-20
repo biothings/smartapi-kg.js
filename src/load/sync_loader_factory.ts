@@ -6,7 +6,7 @@ import ComponentSpecsSyncLoader from "./component_specs_sync_loader";
 import APIListSpecsSyncLoader from "./api_list_specs_sync_loader";
 import { SmartAPISpec } from "../parser/types";
 import { SmartAPIQueryResult, apiListObject } from "../types";
-import Debug from "debug";
+import { Debug } from "@biothings-explorer/utils";
 const debug = Debug("bte:smartapi-kg:SyncLoader");
 
 export const syncLoaderFactory = (
